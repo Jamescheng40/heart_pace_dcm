@@ -93,7 +93,7 @@ class Window(Frame):
                 messagebox.showinfo('Message','Amount of user reaches maximum')
                 self.sub1.destroy
         def clicked_log1( ):
-            file=open("D:/banana.txt","r")
+            file=open("D:/testcount.txt","r")
             a=0
             for line in file:
                 line = line.strip().split("\t")
