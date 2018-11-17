@@ -133,6 +133,7 @@ class Window(Frame):
         
             self.sub2.e1=Entry(self.sub2)
             self.sub2.e1.place(x=110,y=30)
+            
 
             self.sub2.e2=Entry(self.sub2)
             self.sub2.e2.config(show="*")
@@ -173,42 +174,114 @@ class Window(Frame):
                         messagebox.showinfo('Message','You are logged in')
                         self.sub2.sub=Toplevel(self.sub2)
                         self.sub2.sub.title("window")
-                        self.sub2.sub.geometry("500x500+125+125")
+                        self.sub2.sub.geometry("600x600+125+125")
+
+
                         variable = StringVar(self.sub2.sub)
                         variable.set("Select") # default value
-                        
-
                         w = OptionMenu(self.sub2.sub, variable, "AAT", "VVT", "AOO","AAI","VOO","VVI","VDD","DOO","DDI","DDD","AOOR","AAIR","VOOR","VVIR","VDDR","DOOR","DDIR","DDDR")
                         w.pack()
+                        
                         w.place(x=120,y=50)
                         w1=Label(self.sub2.sub,text="Select mode:")
                         w1.place(x=30,y=50)
+                        
                         send_button = Button(self.sub2.sub,text = "Send", command=init_serial)
-                        send_button.place(x=200,y=300)
+                        send_button.place(x=100,y=370)
                         cancel_button = Button(self.sub2.sub,text = "Cancel",command=self.sub2.sub.destroy)
-                        cancel_button.place(x=260,y=300)
+                        cancel_button.place(x=160,y=370)
                         saveButton=Button(self.sub2.sub,text="Save current setting",command=save)
-                        saveButton.place(x=320,y=300)
+                        saveButton.place(x=220,y=370)
+
+                        ##Parameter Label
                         voo=Label(self.sub2.sub, text="Ventricular Amplitude:")
                         voo.place(x=30,y=100)
                         voo1=Label(self.sub2.sub,text="Ventricular Pulse Width:")
-                        voo1.place(x=30,y=150)
+                        voo1.place(x=30,y=120)
                         voo2=Label(self.sub2.sub,text="Upper Rate Limit:")
-                        voo2.place(x=30,y=200)
+                        voo2.place(x=30,y=140)
                         voo3=Label(self.sub2.sub,text="Lower Rate Limit:")
-                        voo3.place(x=30,y=250)
+                        voo3.place(x=30,y=160)
+                        voo4=Label(self.sub2.sub, text="Atrial Amplitude:")
+                        voo4.place(x=30,y=180)
+                        voo5=Label(self.sub2.sub, text="Atrial Pulse Width:")
+                        voo5.place(x=30,y=200)
+                        voo6=Label(self.sub2.sub, text="Ventricular Sensitivity:")
+                        voo6.place(x=30,y=220)
+                        voo7=Label(self.sub2.sub, text="Atrial Sensitivity:")
+                        voo7.place(x=30,y=240)
+                        voo8=Label(self.sub2.sub, text="VRP:")
+                        voo8.place(x=30,y=260)
+                        voo9=Label(self.sub2.sub, text="ARP:")
+                        voo9.place(x=30,y=280)
+                        voo10=Label(self.sub2.sub, text="PVARP:")
+                        voo10.place(x=30,y=300)
+                        voo11=Label(self.sub2.sub, text="Hysteresis:")
+                        voo11.place(x=30,y=320)
+                        voo12=Label(self.sub2.sub, text="Rate Smoothing:")
+                        voo12.place(x=30,y=340)
+                        
                         self.tempname=self.sub2.e1.get()
-                  
+                        
+                        ##Parameter entries
                         self.sub2.sub.e1=Entry(self.sub2.sub)
                         self.sub2.sub.e1.place(x=180,y=100)
                         self.sub2.sub.e2=Entry(self.sub2.sub)
-                        self.sub2.sub.e2.place(x=180,y=150)
+                        self.sub2.sub.e2.place(x=180,y=120)
                         self.sub2.sub.e3=Entry(self.sub2.sub)
-                        self.sub2.sub.e3.place(x=180,y=200)
+                        self.sub2.sub.e3.place(x=180,y=140)
                         self.sub2.sub.e4=Entry(self.sub2.sub)
-                        self.sub2.sub.e4.place(x=180,y=250)
-                       
-                        
+                        self.sub2.sub.e4.place(x=180,y=160)
+                        self.sub2.sub.e5=Entry(self.sub2.sub)
+                        self.sub2.sub.e5.place(x=180,y=180)
+                        self.sub2.sub.e6=Entry(self.sub2.sub)
+                        self.sub2.sub.e6.place(x=180,y=200)
+                        self.sub2.sub.e7=Entry(self.sub2.sub)
+                        self.sub2.sub.e7.place(x=180,y=220)
+                        self.sub2.sub.e8=Entry(self.sub2.sub)
+                        self.sub2.sub.e8.place(x=180,y=240)
+                        self.sub2.sub.e9=Entry(self.sub2.sub)
+                        self.sub2.sub.e9.place(x=180,y=260)
+                        self.sub2.sub.e10=Entry(self.sub2.sub)
+                        self.sub2.sub.e10.place(x=180,y=280)
+                        self.sub2.sub.e11=Entry(self.sub2.sub)
+                        self.sub2.sub.e11.place(x=180,y=300)
+                        self.sub2.sub.e12=Entry(self.sub2.sub)
+                        self.sub2.sub.e12.place(x=180,y=320)
+                        self.sub2.sub.e13=Entry(self.sub2.sub)
+                        self.sub2.sub.e13.place(x=180,y=340)
+
+                        if (variable.get()=="AOO"):
+                            self.sub2.sub.e1.config(state='disabled')
+                            self.sub2.sub.e2.config(state='disabled')
+                            self.sub2.sub.e7.config(state='disabled')
+                            self.sub2.sub.e8.config(state='disabled')
+                            self.sub2.sub.e9.config(state='disabled')
+                            self.sub2.sub.e10.config(state='disabled')
+                            self.sub2.sub.e11.config(state='disabled')
+                            self.sub2.sub.e12.config(state='disabled')
+                            self.sub2.sub.e13.config(state='disabled')
+                        if (variable.get()=="AAI"):
+                            self.sub2.sub.e1.config(state='disabled')
+                            self.sub2.sub.e2.config(state='disabled')
+                            self.sub2.sub.e8.config(state='disabled')
+                            self.sub2.sub.e9.config(state='disabled')
+                        if (variable.get()=="VOO"):
+                            self.sub2.sub.e5.config(state='disabled')
+                            self.sub2.sub.e6.config(state='disabled')
+                            self.sub2.sub.e7.config(state='disabled')
+                            self.sub2.sub.e8.config(state='disabled')
+                            self.sub2.sub.e9.config(state='disabled')
+                            self.sub2.sub.e10.config(state='disabled')
+                            self.sub2.sub.e11.config(state='disabled')
+                            self.sub2.sub.e12.config(state='disabled')
+                            self.sub2.sub.e13.config(state='disabled')
+                        if (variable.get()=="VVI"):
+                            self.sub2.sub.e5.config(state='disabled')
+                            self.sub2.sub.e6.config(state='disabled')
+                            self.sub2.sub.e8.config(state='disabled')
+                            self.sub2.sub.e10.config(state='disabled')
+                            self.sub2.sub.e11.config(state='disabled')
                         load()
 
                     elif self.sub2.e2.get() != line[1]:
