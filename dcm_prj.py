@@ -8,7 +8,6 @@
 
 import serial.tools.list_ports as port_list
 import serial
-import thread
 
 
 def init_serial():
@@ -20,7 +19,7 @@ def init_serial():
     ser.baudrate = 9600
     ports = list(port_list.comports())
     if not ports:
-        print('not logged in')
+        print('no device plugged in')
     else:
         for p in ports: print(p[0])
         ser.port = p[0]

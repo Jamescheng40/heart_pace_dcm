@@ -9,6 +9,7 @@ class Window(Frame):
         Frame.__init__(self, master)                 
         self.master = master
         self.init_window()
+        #hahahahahahahahah
 
     #Creation of init_window
     def init_window(self):
