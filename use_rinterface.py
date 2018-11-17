@@ -13,8 +13,30 @@ class Window(Frame):
         self.master = master
         self.b = 0
         self.init_window()
+
+    #initializing serial communication
+    def init_serial():
+
+        global ser
+        ser = serial.Serial()
+        ser.baudrate = 9600
+        ports = list(port_list.comports())
+        if not ports:
+            print('no device plugged in')
+        else:
+            for p in ports: print(p[0])
+            ser.port = p[0]
+            ser.open()
+            if ser.isOpen():
+                print('open: ')    
+                ser.write(b'adf')
+    
+
+
+
         
     #Creation of init_window12345678990
+        
     def init_window(self):
 
         # changing the title of our master widget      
@@ -66,7 +88,7 @@ class Window(Frame):
             self.sub2.e1=Entry(self.sub2)
             self.sub2.e1.place(x=110,y=30)
 
-            self.sub2.e2=Entry(sub2)
+            self.sub2.e2=Entry(self.sub2)
             self.sub2.e2.config(show="*")
             self.sub2.e2.place(x=110,y=100)
 
@@ -92,6 +114,8 @@ class Window(Frame):
             elif self.b>9:
                 messagebox.showinfo('Message','Amount of user reaches maximum')
                 self.sub1.destroy
+    
+        #added  
         def clicked_log1( ):
             file=open("D:/testcount.txt","r")
             a=0
@@ -113,7 +137,7 @@ class Window(Frame):
                         w.place(x=120,y=20)
                         w1=Label(self.sub1.sub,text="Select mode:")
                         w1.place(x=30,y=20)
-                        send_button = Button(self.sub1.sub,text = "Send")
+                        send_button = Button(self.sub1.sub,text = "Send", command=init_serial)
                         send_button.place(x=200,y=20)
                         cancel_button = Button(self.sub1.sub,text = "Cancel")
                         cancel_button.place(x=260,y=20)
