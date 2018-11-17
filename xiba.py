@@ -9,8 +9,7 @@ class Window(Frame):
         Frame.__init__(self, master)                 
         self.master = master
         self.init_window()
-        #hahahahahahahahah
-
+        
     #Creation of init_window
     def init_window(self):
 
@@ -20,24 +19,36 @@ class Window(Frame):
         # allowing the widget to take the full space of the root window
         self.pack(fill=BOTH, expand=1)
 
+        binit = Label(self, text="Please register before you log in")
+        binit.place(x=30,y=30)
         
         
 
         bName = Label(self, text="Username:")
-        bName.place(x=30,y=30)
+        bName.place(x=30,y=100)
         
         bPass = Label(self, text="Password:")
-        bPass.place(x=30,y=100)
+        bPass.place(x=30,y=150)
         
-        self.e1=Entry(self)
-        self.e1.place(x=110,y=30)
+3        self.e1=Entry(self)
+        self.e1.place(x=110,y=100)
 
         self.e2=Entry(self)
-        self.e2.place(x=110,y=100)
+        self.e2.place(x=110,y=150)
 
         
         def clicked_reg( ):
+            count = 0
             f=open("/Users/pc/Desktop/kill.txt","r")
+            for line in f:
+
+                if count<=10:
+                    count = count +1
+                    return
+                else:
+                    messagebox.showinfo('Message','Maximum users registered')
+                    f.close()
+                    return
             for line in f:
                 line = line.strip().split("\t")
                 if self.e1.get() == line[0]:
