@@ -14,22 +14,7 @@ class Window(Frame):
         self.b = 0
         self.init_window()
 
-    #initializing serial communication
-    def init_serial():
-
-        global ser
-        ser = serial.Serial()
-        ser.baudrate = 9600
-        ports = list(port_list.comports())
-        if not ports:
-            print('no device plugged in')
-        else:
-            for p in ports: print(p[0])
-            ser.port = p[0]
-            ser.open()
-            if ser.isOpen():
-                print('open: ')    
-                ser.write(b'adf')
+    
     
 
 
@@ -47,6 +32,24 @@ class Window(Frame):
         
         binit = Label(self, text="Please register before you log in")
         binit.place(x=30,y=30)
+
+
+        #initializing serial communication
+        def init_serial():
+
+            global ser
+            ser = serial.Serial()
+            ser.baudrate = 9600
+            ports = list(port_list.comports())
+            if not ports:
+                print('no device plugged in')
+            else:
+                for p in ports: print(p[0])
+                ser.port = p[0]
+                ser.open()
+                if ser.isOpen():
+                    print('open: ')    
+                    ser.write(b'adf')
 
         def clicked_reg():
             self.sub1=Toplevel(self)
@@ -125,41 +128,40 @@ class Window(Frame):
                     a = 1
                     if self.sub2.e2.get() == line[1]:
                         messagebox.showinfo('Message','You are logged in')
-                        self.sub1.sub=Toplevel(sub1)
-                        self.sub1.sub.title("window")
-                        self.sub1.sub.geometry("400x400+125+125")
-                        variable = StringVar(self.sub1.sub)
+                        self.sub2.sub=Toplevel(self.sub2)
+                        self.sub2.sub.title("window")
+                        self.sub2.sub.geometry("400x400+125+125")
+                        variable = StringVar(self.sub2.sub)
                         variable.set("Select") # default value
                         
 
-                        w = OptionMenu(self.sub1.sub, variable, "AAT", "VVT", "AOO","AAI","VOO","VVI","VDD","DOO","DDI","DDD","AOOR","AAIR","VOOR","VVIR","VDDR","DOOR","DDIR","DDDR")
+                        w = OptionMenu(self.sub2.sub, variable, "AAT", "VVT", "AOO","AAI","VOO","VVI","VDD","DOO","DDI","DDD","AOOR","AAIR","VOOR","VVIR","VDDR","DOOR","DDIR","DDDR")
                         w.pack()
                         w.place(x=120,y=20)
-                        w1=Label(self.sub1.sub,text="Select mode:")
+                        w1=Label(self.sub2.sub,text="Select mode:")
                         w1.place(x=30,y=20)
-                        send_button = Button(self.sub1.sub,text = "Send", command=init_serial)
+                        send_button = Button(self.sub2.sub,text = "Send", command=init_serial)
                         send_button.place(x=200,y=20)
-                        cancel_button = Button(self.sub1.sub,text = "Cancel")
+                        cancel_button = Button(self.sub2.sub,text = "Cancel")
                         cancel_button.place(x=260,y=20)
-                        voo=Label(self.sub1.sub, text="Ventricular Amplitude:")
+                        voo=Label(self.sub2.sub, text="Ventricular Amplitude:")
                         voo.place(x=30,y=100)
-                        voo1=Label(self.sub1.sub,text="Ventricular Pulse Width:")
+                        voo1=Label(self.sub2.sub,text="Ventricular Pulse Width:")
                         voo1.place(x=30,y=150)
-                        voo2=Label(self.sub1.sub,text="Upper Rate Limit:")
+                        voo2=Label(self.sub2.sub,text="Upper Rate Limit:")
                         voo2.place(x=30,y=200)
-                        voo3=Label(self.sub1.sub,text="Lower Rate Limit:")
+                        voo3=Label(self.sub2.sub,text="Lower Rate Limit:")
                         voo3.place(x=30,y=250)
-                        sub.e1=Entry(self.sub1.sub)
-                        sub.e1.place(x=180,y=100)
-                        sub.e2=Entry(self.sub1.sub)
-                        sub.e2.place(x=180,y=150)
-                        sub.e3=Entry(self.sub1.sub)
-                        sub.e3.place(x=180,y=200)
-                        sub.e4=Entry(self.sub1.sub)
-                        sub.e4.place(x=180,y=250)
+                        self.sub2.sub.e1=Entry(self.sub2.sub)
+                        self.sub2.sub.e1.place(x=180,y=100)
+                        self.sub2.sub.e2=Entry(self.sub2.sub)
+                        self.sub2.sub.e2.place(x=180,y=150)
+                        self.sub2.sub.e3=Entry(self.sub2.sub)
+                        self.sub2.sub.e3.place(x=180,y=200)
+                        self.sub2.sub.e4=Entry(self.sub2.sub)
+                        self.sub2.sub.e4.place(x=180,y=250)
 
-
-                    elif self.sub1.e2.get() != line[1]:
+                    elif self.sub2.e2.get() != line[1]:
                         messagebox.showinfo('Message','Password is not correct')
             if a==0:
                 messagebox.showinfo('Message','You are not registered')
