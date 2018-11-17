@@ -9,7 +9,7 @@ class Window(Frame):
         self.master = master
         self.init_window()
         
-    #Creation of init_window
+    #Creation of init_window12345678990
     def init_window(self):
 
         # changing the title of our master widget      
