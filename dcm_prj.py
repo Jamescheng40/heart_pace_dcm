@@ -65,39 +65,39 @@ def init_serial():
         for p in ports: print(p[0])
         ser.port = p[0]
         ser.open()
-        x = b"\x16\x16\x16\x16\x16"
+        x = bytearray([22,1,1,1,1])
         #x = len(array)
         print(x[0])
         if ser.isOpen():
             print('open: ')    
-            ser.write(b"\x16\x16\x16\x16\x16")
-    ser.close()
+            ser.write(x)
+            
             
 
 
 #def detect_serial():
 
-try:
-    a = 1
-    b = 2
-    _thread.start_new_thread(thread_serial_auto,(a,))
-except:
-    print("asdfsadf")
+#try:
+#    a = 1
+ #   b = 2
+  #  _thread.start_new_thread(thread_serial_auto,(a,))
+#except:
+ #   print("asdfsadf")
 
-
-while 1:
-    pass
+init_serial()
+#while 1:
+ #   pass
     
 
 
 
-#try:
-#    while 1:
-#        bytes = ser.readline()
-#        print('You sent: ' + bytes)
-#        break
-#except KeyboardInterrupt:
-#    print('interrupted')
+try:
+    while 1:
+        bytes = ser.readline()
+        print('You sent: ' + bytes)
+        break
+except KeyboardInterrupt:
+    print('interrupted')
 
 
 #ports = list(port_list.comports())

@@ -14,17 +14,13 @@ class Window(Frame):
 
     def __init__(self, master=None):
         Frame.__init__(self, master)
-        
-     
-        
         self.master = master
         self.b = 0
         self.tempname=""
         self.name="Z:/filename.txt"
         self.init_window()
         self.variable = ""
-        self.p_state = 0
-        
+        self.p_state = 0        
 
 
 
@@ -126,7 +122,11 @@ class Window(Frame):
             self.sub2.sub.e3.insert(0,temp3)
             self.sub2.sub.e4.insert(0,temp4)
             messagebox.showinfo('Message','Settings loaded')
-            
+
+
+
+   #     def process_array():
+  
 ##            
 ##        def clicked_reg():
 ##            self.sub1=Toplevel(self)
@@ -262,30 +262,37 @@ class Window(Frame):
         #testing serial communication as well as added periodic action
         def init_serial():
             
-            
-            ser = serial.Serial()
-            ser.baudrate = 115200
+
             ports = list(port_list.comports())
             if not ports:
                 if self.p_state == 0:
+                    try:
+                        ser.close()
+                    except:
+                        pass
                     messagebox.showinfo('Message','Device plugged out')
                     self.p_state = 1
             else:
                 if self.p_state == 1:
+                    global ser
+                    ser = serial.Serial()
+                    ser.baudrate = 115200
                     for p in ports: print(p[0])
                     ser.port = p[0]
                     ser.open()
-                    x = b"\x16\x16\x16\x16\x16"
+                   # x = b"\x16\x16\x16\x16\x16"
                     #x = len(array)
-                    print(x[0])
+                    #print(x[0])
                     if ser.isOpen():
                         messagebox.showinfo('Message','Device plugged in ')    
-                        ser.write(b"\x16\x16\x16\x16\x16")
+                       # ser.write(b"\x16\x16\x16\x16\x16")
                     self.p_state = 0
-            ser.close()
+                    thread_data_receiving()
+            
 
             threading.Timer(1, init_serial).start()  
-            
+
+       #function callback when the selection is changed      
         def callback(*args):
             print("variable changed")
             if (self.variable.get()=="AOO"):
@@ -319,7 +326,125 @@ class Window(Frame):
                 self.sub2.sub.e8.config(state='disabled')
                 self.sub2.sub.e10.config(state='disabled')
                 self.sub2.sub.e11.config(state='disabled')
+
+        def thread_data_receiving():
+            try:       
+                s = ser.read(2)
+                print("message received from simulink")
+                print(s[1])
+            except:
+                pass
+            if self.p_state == 0:
+                threading.Timer(0.1, thread_data_receiving).start()  
+
+
+
             
+        def send_bytearray(array):
+            if self.p_state == 1:
+                messagebox.showinfo('Message','devoce not plugged in check your connection')
+            else:
+               # ser = serial.Serial()
+                #ser.baudrate = 115200
+                print(array)
+                ports = list(port_list.comports())
+                if not ports:
+                   
+                    messagebox.showinfo('Message','message not been able to send due to noise')
+                        
+                else:
+                    print(ports)
+                    for p in ports: print(p[0])
+                    #ser.port = p[0]
+                    #ser.open()
+                    sent_arr = bytearray(array)
+                    #x = len(array)
+                    print(sent_arr[0])
+                    if ser.isOpen():
+                        ser.write(sent_arr)
+                        messagebox.showinfo('Message','message sent ')
+                        
+                #ser.close()
+
+
+            
+
+          
+                
+        def process_array():
+            #thread_data_receiving()
+            pro_array = [0x16,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0]
+            print(self.sub2.sub.e1.get())
+            if self.sub2.sub.e1.get() != "":
+                try:
+                    pro_array[1] = (int(self.sub2.sub.e1.get()))
+                except:
+                    pass
+
+            if self.sub2.sub.e2.get() != "":
+                try:
+                    pro_array[2] = (int(self.sub2.sub.e2.get()))
+                except:
+                    pass
+            if self.sub2.sub.e3.get() != "":
+                try:
+                    pro_array[3] = (int(self.sub2.sub.e3.get()))
+                except:
+                    pass
+            if self.sub2.sub.e4.get() != "":
+                try:
+                    pro_array[4] = (int(self.sub2.sub.e4.get()))
+                except:
+                    pass
+            if self.sub2.sub.e5.get() != "":
+                try:
+                    pro_array[5] = (int(self.sub2.sub.e5.get()))
+                except:
+                    pass
+            if self.sub2.sub.e6.get() != "":
+                try:
+                    pro_array[6] = (int(self.sub2.sub.e6.get()))
+                except:
+                    pass
+            if self.sub2.sub.e7.get() != "":
+                try:
+                    pro_array[7] = (int(self.sub2.sub.e7.get()))
+                except:
+                    pass
+            if self.sub2.sub.e8.get() != "":
+                try:
+                    pro_array[8] = (int(self.sub2.sub.e8.get()))
+                except:
+                    pass
+            if self.sub2.sub.e9.get() != "":
+                try:
+                    pro_array[9] = (int(self.sub2.sub.e9.get()))
+                except:
+                    pass
+            if self.sub2.sub.e10.get() != "":
+                try:
+                    pro_array[10] = (int(self.sub2.sub.e10.get()))
+                except:
+                    pass
+            if self.sub2.sub.e11.get() != "":
+                try:
+                    pro_array[11] = (int(self.sub2.sub.e11.get()))
+                except:
+                    pass
+
+            if self.sub2.sub.e12.get() != "":
+                try:
+                    pro_array[12] = (int(self.sub2.sub.e12.get()))
+                except:
+                    pass
+
+            if self.sub2.sub.e13.get() != "":
+                try:
+                    pro_array[13] = (int(self.sub2.sub.e13.get()))
+                except:
+                    pass
+            
+            send_bytearray(pro_array)
         #added  
         def clicked_log1( ):
             file=open("Z:/testcount.txt","r")
@@ -352,7 +477,7 @@ class Window(Frame):
                         w1=Label(self.sub2.sub,text="Select mode:")
                         w1.place(x=30,y=50)
                         
-                        send_button = Button(self.sub2.sub,text = "Send")
+                        send_button = Button(self.sub2.sub,text = "Send", command=process_array)
                         send_button.place(x=100,y=370)
                         cancel_button = Button(self.sub2.sub,text = "Cancel",command=self.sub2.sub.destroy)
                         cancel_button.place(x=160,y=370)
