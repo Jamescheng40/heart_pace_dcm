@@ -12,7 +12,7 @@ class Window(Frame):
         Frame.__init__(self, master)                 
         self.master = master
         self.tempname=""
-        self.name="D:/filename.txt"
+        self.name="/Users/pc/Desktop/3K/filename.txt"
         self.init_window()
 
 
@@ -155,7 +155,7 @@ class Window(Frame):
                 messagebox.showinfo('Message','Password does not matched!')
             else:
                 count=0
-                f=open("/Users/pc/Desktop/kill.txt","r")
+                f=open("/Users/pc/Desktop/3K/kill.txt","r")
                 for line in f:
                     if count < 9:
                         count += 1
@@ -163,14 +163,14 @@ class Window(Frame):
                         messagebox.showinfo('Message','Amount of user reaches maximum')
                         f.close()
                         return
-                f=open("/Users/pc/Desktop/kill.txt","r")
+                f=open("/Users/pc/Desktop/3K/kill.txt","r")
                 for line in f:
                     line = line.strip().split("\t")
                     if self.sub1.e1.get() == line[0]:
                         messagebox.showinfo('Message','User name has been used')
                         f.close()
                         return
-                f=open("/Users/pc/Desktop/kill.txt","a")
+                f=open("/Users/pc/Desktop/3K/kill.txt","a")
                 f.write(self.sub1.e1.get())
                 f.write("\t")
                 f.write(self.sub1.e2.get())
@@ -181,7 +181,7 @@ class Window(Frame):
     
         #added  
         def clicked_log1( ):
-            file=open("/Users/pc/Desktop/kill.txt","r")
+            file=open("/Users/pc/Desktop/3K/kill.txt","r")
             a=0
             for line in file:
                 line = line.strip().split("\t")
