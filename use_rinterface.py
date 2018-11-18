@@ -1,27 +1,54 @@
 from tkinter import *
 
 from tkinter import messagebox
+import serial.tools.list_ports as port_list
 import serial
 import _thread
-
+import threading
+import queue
+import time, threading 
 
 class Window(Frame):
 
     
 
     def __init__(self, master=None):
-        Frame.__init__(self, master)                 
+        Frame.__init__(self, master)
+        
+     
+        
         self.master = master
         self.b = 0
         self.tempname=""
-        self.name="D:/filename.txt"
+        self.name="Z:/filename.txt"
         self.init_window()
-
-
-
-    
-
         
+        self.p_state = 0
+        
+
+
+
+## wasted testing garbage
+        #self.queue1 = queue.Queue()
+       # ThreadedTask(self.queue1).start()
+       # self.master.after(100, self.process_queue)
+        #messagebox.showinfo('Message','Invalid input for amplitude')
+       # try:
+       #     r = 1
+        #    _thread.start_new_thread(self.thread_serial_auto,(r,))
+       # except:
+        #    print("asdfsadf")
+        
+##
+##    def process_queue(self):
+##        try:
+##            msg = self.queue1.get(0)
+##
+##        except queue.Empty:
+##            self.master.after(100, self.process_queue)
+##        
+
+
     #Creation of init_window12345678990
         
     def init_window(self):
@@ -35,48 +62,9 @@ class Window(Frame):
         binit = Label(self, text="Please register before you log in")
         binit.place(x=30,y=30)
 
+        
 
-        #multithread to detect the status of the serial communication
-        def thread_serial_auto(a):
-            p = []
-            a = ""
-            serial_state = 0
-            ports = list(port_list.comports())
-            for p in ports: print(p[0])
-            try:
-                a = p[0]
-            except:
-                pass
-            
-            while 1:
-                if(serial_state == 0):
-                    a = ""
-                   # print("a")
-                ports = list(port_list.comports())
-                #print(ports)
-                for p in ports: pass
-                try:
-                    a = p[0]
-                except:
-                    pass
-                
-                if(ports != []):
-                    
-                    if(serial_state == 1):
-                        init_serial()
-                        serial_state = 0
-                    
-                else:
-              
-                    if(serial_state == 0):
-                        #do sth
-                        
-                        print("normal state")
-                        serial_state = 1
-                
-            print("hello")
-
-
+       
 ##         old 
 ##        #initializing serial communication
 ##        def init_serial():
@@ -94,28 +82,6 @@ class Window(Frame):
 ##                if ser.isOpen():
 ##                    print('open: ')    
 ##                    ser.write(b'adf')
-
-        #testing serial communication as well as
-        def init_serial():
-            
-            global ser
-            ser = serial.Serial()
-            ser.baudrate = 115200
-            ports = list(port_list.comports())
-            if not ports:
-                print('no device plugged in')
-            else:
-                for p in ports: print(p[0])
-                ser.port = p[0]
-                ser.open()
-                x = b"\x16\x16\x16\x16\x16"
-                #x = len(array)
-                print(x[0])
-                if ser.isOpen():
-                    print('open: ')    
-                    ser.write(b"\x16\x16\x16\x16\x16")
-            ser.close()
-                    
 
 
 
@@ -292,6 +258,34 @@ class Window(Frame):
                 f.close()
                 messagebox.showinfo('Message', 'You have registered')
             
+
+        #testing serial communication as well as added periodic action
+        def init_serial():
+            
+            
+            ser = serial.Serial()
+            ser.baudrate = 115200
+            ports = list(port_list.comports())
+            if not ports:
+                if self.p_state == 0:
+                    messagebox.showinfo('Message','Device plugged out')
+                    self.p_state = 1
+            else:
+                if self.p_state == 1:
+                    for p in ports: print(p[0])
+                    ser.port = p[0]
+                    ser.open()
+                    x = b"\x16\x16\x16\x16\x16"
+                    #x = len(array)
+                    print(x[0])
+                    if ser.isOpen():
+                        messagebox.showinfo('Message','Device plugged in ')    
+                        ser.write(b"\x16\x16\x16\x16\x16")
+                    self.p_state = 0
+            ser.close()
+
+            threading.Timer(1, init_serial).start()  
+            
     
             
         #added  
@@ -307,7 +301,14 @@ class Window(Frame):
                         self.sub2.sub=Toplevel(self.sub2)
                         self.sub2.sub.title("window")
                         self.sub2.sub.geometry("600x600+125+125")
+                        self.master.after(100, init_serial)
 
+
+                        ##serial auto detection thread starts
+
+
+                        #init_serial()
+                        
 
                         variable = StringVar(self.sub2.sub)
                         variable.set("Select") # default value
@@ -318,7 +319,7 @@ class Window(Frame):
                         w1=Label(self.sub2.sub,text="Select mode:")
                         w1.place(x=30,y=50)
                         
-                        send_button = Button(self.sub2.sub,text = "Send", command=init_serial)
+                        send_button = Button(self.sub2.sub,text = "Send")
                         send_button.place(x=100,y=370)
                         cancel_button = Button(self.sub2.sub,text = "Cancel",command=self.sub2.sub.destroy)
                         cancel_button.place(x=160,y=370)
@@ -433,7 +434,60 @@ class Window(Frame):
         logButton.place(x=150, y=200)
         
    
-          
+## wasted testing garbage       
+##class ThreadedTask(threading.Thread):
+##    def __init__(self,queue):
+##        threading.Thread.__init__(self)
+##        self.queue = queue
+##        
+##    def run(self):
+##        self.thread_serial_auto()
+##        self.queue.put("task finished")
+##     #multithread to detect the status of the serial communication
+##            
+##    def thread_serial_auto(self):
+##        p = []
+##        a = ""
+##        serial_state = 0
+##        ports = list(port_list.comports())
+##        for p in ports: print(p[0])
+##        try:
+##            a = p[0]
+##        except:
+##            pass
+##        
+##        while 1:
+##            if(serial_state == 0):
+##                a = ""
+##               # print("a")
+##            ports = list(port_list.comports())
+##            #print(ports)
+##            for p in ports: pass
+##            try:
+##                a = p[0]
+##            except:
+##                pass
+##            
+##            if(ports != []):
+##                
+##                if(serial_state == 1):
+##                    self.init_serial()
+##                    serial_state = 0
+##                
+##            else:
+##          
+##                if(serial_state == 0):
+##                    #do sth
+##                    
+##                    print("normal state")
+##                    serial_state = 1
+##            
+##        print("hello")
+
+
+
+
+
 
 root = Tk()
 
@@ -441,4 +495,7 @@ root = Tk()
 root.geometry("300x300")
 
 app = Window(root)
+
 root.mainloop()  
+
+

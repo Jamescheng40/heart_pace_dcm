@@ -52,7 +52,7 @@ def thread_serial_auto(a):
     print("hello")
 
 
-#    
+#testing serial communication as well as
 def init_serial():
     
     global ser
