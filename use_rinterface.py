@@ -1,7 +1,8 @@
 from tkinter import *
 
 from tkinter import messagebox
-
+import serial
+import _thread
 
 
 class Window(Frame):
@@ -18,7 +19,7 @@ class Window(Frame):
 
 
 
-
+    
 
         
     #Creation of init_window12345678990
@@ -35,12 +36,71 @@ class Window(Frame):
         binit.place(x=30,y=30)
 
 
-        #initializing serial communication
-        def init_serial():
+        #multithread to detect the status of the serial communication
+        def thread_serial_auto(a):
+            p = []
+            a = ""
+            serial_state = 0
+            ports = list(port_list.comports())
+            for p in ports: print(p[0])
+            try:
+                a = p[0]
+            except:
+                pass
+            
+            while 1:
+                if(serial_state == 0):
+                    a = ""
+                   # print("a")
+                ports = list(port_list.comports())
+                #print(ports)
+                for p in ports: pass
+                try:
+                    a = p[0]
+                except:
+                    pass
+                
+                if(ports != []):
+                    
+                    if(serial_state == 1):
+                        init_serial()
+                        serial_state = 0
+                    
+                else:
+              
+                    if(serial_state == 0):
+                        #do sth
+                        
+                        print("normal state")
+                        serial_state = 1
+                
+            print("hello")
 
+
+##         old 
+##        #initializing serial communication
+##        def init_serial():
+##
+##            global ser
+##            ser = serial.Serial()
+##            ser.baudrate = 9600
+##            ports = list(port_list.comports())
+##            if not ports:
+##                print('no device plugged in')
+##            else:
+##                for p in ports: print(p[0])
+##                ser.port = p[0]
+##                ser.open()
+##                if ser.isOpen():
+##                    print('open: ')    
+##                    ser.write(b'adf')
+
+        #testing serial communication as well as
+        def init_serial():
+            
             global ser
             ser = serial.Serial()
-            ser.baudrate = 9600
+            ser.baudrate = 115200
             ports = list(port_list.comports())
             if not ports:
                 print('no device plugged in')
@@ -48,9 +108,17 @@ class Window(Frame):
                 for p in ports: print(p[0])
                 ser.port = p[0]
                 ser.open()
+                x = b"\x16\x16\x16\x16\x16"
+                #x = len(array)
+                print(x[0])
                 if ser.isOpen():
                     print('open: ')    
-                    ser.write(b'adf')
+                    ser.write(b"\x16\x16\x16\x16\x16")
+            ser.close()
+                    
+
+
+
         def save():
              
             if int(self.sub2.sub.e1.get())>100:
@@ -93,25 +161,58 @@ class Window(Frame):
             self.sub2.sub.e4.insert(0,temp4)
             messagebox.showinfo('Message','Settings loaded')
             
-            
+##            
+##        def clicked_reg():
+##            self.sub1=Toplevel(self)
+##            frame = Frame(self.sub1, width=300, height=300)
+##            frame.pack()
+##            
+##            bName = Label(self.sub1, text="Username:")
+##            bName.place(x=30,y=30)
+##        
+##            bPass = Label(self.sub1, text="Password:")
+##            bPass.place(x=30,y=100)
+##        
+##            self.sub1.e1=Entry(self.sub1);
+##            self.sub1.e1.place(x=110,y=30)
+##            
+##
+##            self.sub1.e2=Entry(self.sub1)
+##            self.sub1.e2.config(show="*")
+##            self.sub1.e2.place(x=110,y=100)
+##
+##            confirm=Button(self.sub1,text="Confirm",command=clicked_reg1)
+##            confirm.place(x=50,y=200)
+##
+##            cancel=Button(self.sub1,text="Cancel",command=self.sub1.destroy)
+##            cancel.place(x=130,y=200)
+##            
+
         def clicked_reg():
             self.sub1=Toplevel(self)
-            frame = Frame(self.sub1, width=300, height=300)
+            frame = Frame(self.sub1, width=500, height=300)
             frame.pack()
             
             bName = Label(self.sub1, text="Username:")
-            bName.place(x=30,y=30)
+            bName.place(x=60,y=30)
         
             bPass = Label(self.sub1, text="Password:")
-            bPass.place(x=30,y=100)
+            bPass.place(x=60,y=100)
+
+            bPass = Label(self.sub1, text="Check Password:")
+            bPass.place(x=10,y=150)
         
             self.sub1.e1=Entry(self.sub1);
-            self.sub1.e1.place(x=110,y=30)
+            self.sub1.e1.place(x=200,y=30)
             
 
             self.sub1.e2=Entry(self.sub1)
             self.sub1.e2.config(show="*")
-            self.sub1.e2.place(x=110,y=100)
+            self.sub1.e2.place(x=200,y=100)
+
+            self.sub1.e3=Entry(self.sub1)
+            self.sub1.e3.config(show="*")
+            self.sub1.e3.place(x=200,y=150)
 
             confirm=Button(self.sub1,text="Confirm",command=clicked_reg1)
             confirm.place(x=50,y=200)
@@ -145,26 +246,57 @@ class Window(Frame):
             cancel=Button(self.sub2,text="Cancel",command=self.sub2.destroy)
             cancel.place(x=130,y=200)
             
+##        def clicked_reg1( ):
+##            f=open("Z:/testcount.txt","r")
+##            for line in f:
+##                self.b=self.b+1
+##            if self.b<=9:
+##                f=open("Z:/testcount.txt","a")
+##                f.write(self.sub1.e1.get())
+##                f.write("\t")
+##                f.write(self.sub1.e2.get())
+##                f.write("\n")
+##                f.close()
+##                messagebox.showinfo('Message', 'You have registered')
+##                self.sub1.destroy
+##            elif self.b>9:
+##                messagebox.showinfo('Message','Amount of user reaches maximum')
+##                self.sub1.destroy
+##
+
         def clicked_reg1( ):
-            f=open("D:/testcount.txt","r")
-            for line in f:
-                self.b=self.b+1
-            if self.b<=9:
-                f=open("D:/testcount.txt","a")
+            if self.sub1.e2.get()!=self.sub1.e3.get():
+                messagebox.showinfo('Message','Password does not matched!')
+            else:
+                count=0
+                f=open("Z:/testcount.txt","r")
+                for line in f:
+                    if count < 9:
+                        count += 1
+                    else:
+                        messagebox.showinfo('Message','Amount of user reaches maximum')
+                        f.close()
+                        return
+                f=open("Z:/testcount.txt","r")
+                for line in f:
+                    line = line.strip().split("\t")
+                    if self.sub1.e1.get() == line[0]:
+                        messagebox.showinfo('Message','User name has been used')
+                        f.close()
+                        return
+                f=open("Z:/testcount.txt","a")
                 f.write(self.sub1.e1.get())
                 f.write("\t")
                 f.write(self.sub1.e2.get())
                 f.write("\n")
                 f.close()
                 messagebox.showinfo('Message', 'You have registered')
-                self.sub1.destroy
-            elif self.b>9:
-                messagebox.showinfo('Message','Amount of user reaches maximum')
-                self.sub1.destroy
+            
     
+            
         #added  
         def clicked_log1( ):
-            file=open("D:/testcount.txt","r")
+            file=open("Z:/testcount.txt","r")
             a=0
             for line in file:
                 line = line.strip().split("\t")
