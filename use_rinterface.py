@@ -22,7 +22,7 @@ class Window(Frame):
         self.tempname=""
         self.name="Z:/filename.txt"
         self.init_window()
-        
+        self.variable = ""
         self.p_state = 0
         
 
@@ -286,7 +286,39 @@ class Window(Frame):
 
             threading.Timer(1, init_serial).start()  
             
-    
+        def callback(*args):
+            print("variable changed")
+            if (self.variable.get()=="AOO"):
+                self.sub2.sub.e1.config(state='disabled')
+                self.sub2.sub.e2.config(state='disabled')
+                self.sub2.sub.e7.config(state='disabled')
+                self.sub2.sub.e8.config(state='disabled')
+                self.sub2.sub.e9.config(state='disabled')
+                self.sub2.sub.e10.config(state='disabled')
+                self.sub2.sub.e11.config(state='disabled')
+                self.sub2.sub.e12.config(state='disabled')
+                self.sub2.sub.e13.config(state='disabled')
+            if (self.variable.get()=="AAI"):
+                self.sub2.sub.e1.config(state='disabled')
+                self.sub2.sub.e2.config(state='disabled')
+                self.sub2.sub.e8.config(state='disabled')
+                self.sub2.sub.e9.config(state='disabled')
+            if (self.variable.get()=="VOO"):
+                self.sub2.sub.e5.config(state='disabled')
+                self.sub2.sub.e6.config(state='disabled')
+                self.sub2.sub.e7.config(state='disabled')
+                self.sub2.sub.e8.config(state='disabled')
+                self.sub2.sub.e9.config(state='disabled')
+                self.sub2.sub.e10.config(state='disabled')
+                self.sub2.sub.e11.config(state='disabled')
+                self.sub2.sub.e12.config(state='disabled')
+                self.sub2.sub.e13.config(state='disabled')
+            if (self.variable.get()=="VVI"):
+                self.sub2.sub.e5.config(state='disabled')
+                self.sub2.sub.e6.config(state='disabled')
+                self.sub2.sub.e8.config(state='disabled')
+                self.sub2.sub.e10.config(state='disabled')
+                self.sub2.sub.e11.config(state='disabled')
             
         #added  
         def clicked_log1( ):
@@ -310,9 +342,10 @@ class Window(Frame):
                         #init_serial()
                         
 
-                        variable = StringVar(self.sub2.sub)
-                        variable.set("Select") # default value
-                        w = OptionMenu(self.sub2.sub, variable, "AAT", "VVT", "AOO","AAI","VOO","VVI","VDD","DOO","DDI","DDD","AOOR","AAIR","VOOR","VVIR","VDDR","DOOR","DDIR","DDDR")
+                        self.variable = StringVar(self.sub2.sub)
+                        self.variable.set("Select") # default value
+                        self.variable.trace("w", callback)
+                        w = OptionMenu(self.sub2.sub, self.variable, "AAT", "VVT", "AOO","AAI","VOO","VVI","VDD","DOO","DDI","DDD","AOOR","AAIR","VOOR","VVIR","VDDR","DOOR","DDIR","DDDR")
                         w.pack()
                         
                         w.place(x=120,y=50)
@@ -384,37 +417,9 @@ class Window(Frame):
                         self.sub2.sub.e13=Entry(self.sub2.sub)
                         self.sub2.sub.e13.place(x=180,y=340)
 
-                        if (variable.get()=="AOO"):
-                            self.sub2.sub.e1.config(state='disabled')
-                            self.sub2.sub.e2.config(state='disabled')
-                            self.sub2.sub.e7.config(state='disabled')
-                            self.sub2.sub.e8.config(state='disabled')
-                            self.sub2.sub.e9.config(state='disabled')
-                            self.sub2.sub.e10.config(state='disabled')
-                            self.sub2.sub.e11.config(state='disabled')
-                            self.sub2.sub.e12.config(state='disabled')
-                            self.sub2.sub.e13.config(state='disabled')
-                        if (variable.get()=="AAI"):
-                            self.sub2.sub.e1.config(state='disabled')
-                            self.sub2.sub.e2.config(state='disabled')
-                            self.sub2.sub.e8.config(state='disabled')
-                            self.sub2.sub.e9.config(state='disabled')
-                        if (variable.get()=="VOO"):
-                            self.sub2.sub.e5.config(state='disabled')
-                            self.sub2.sub.e6.config(state='disabled')
-                            self.sub2.sub.e7.config(state='disabled')
-                            self.sub2.sub.e8.config(state='disabled')
-                            self.sub2.sub.e9.config(state='disabled')
-                            self.sub2.sub.e10.config(state='disabled')
-                            self.sub2.sub.e11.config(state='disabled')
-                            self.sub2.sub.e12.config(state='disabled')
-                            self.sub2.sub.e13.config(state='disabled')
-                        if (variable.get()=="VVI"):
-                            self.sub2.sub.e5.config(state='disabled')
-                            self.sub2.sub.e6.config(state='disabled')
-                            self.sub2.sub.e8.config(state='disabled')
-                            self.sub2.sub.e10.config(state='disabled')
-                            self.sub2.sub.e11.config(state='disabled')
+                        print(self.variable.get())
+                        
+
                         load()
 
                     elif self.sub2.e2.get() != line[1]:
