@@ -6,8 +6,7 @@ import serial
 import _thread
 import threading
 import queue
-import time, threading
-import locale
+import time, threading 
 
 class Window(Frame):
 
@@ -18,7 +17,7 @@ class Window(Frame):
         self.master = master
         self.b = 0
         self.tempname=""
-        self.name="D:/filename.txt"
+        self.name="Z:/filename.txt"
         self.init_window()
         self.variable = ""
         self.p_state = 0
@@ -84,157 +83,31 @@ class Window(Frame):
 
 
         def save():
+             
+            if int(self.sub2.sub.e1.get())>100:
+                messagebox.showinfo('Message','Invalid input for amplitude')
+                return
+            if int(self.sub2.sub.e2.get())>100:
+                messagebox.showinfo('Message','Invalid input for pulse width')
+                return
+            if int(self.sub2.sub.e3.get())>100:
+                messagebox.showinfo('Message','Invalid input for upper rate limit')
+                return
+            if int(self.sub2.sub.e4.get())>100:
+                messagebox.showinfo('Message','Invalid input for lower rate limit')
+                return
             
             outname=self.name.replace("filename",self.tempname)
             f=open(outname,"w")
-                
-            if (self.variable.get()=="AOO"):
-                if locale.atof(self.sub2.sub.e3.get())>175 or locale.atof(self.sub2.sub.e3.get())<50:
-                    messagebox.showinfo('Message','Invalid input for upper rate limit\nshould be in the range 50-175ppm')
-                    return
-                if locale.atof(self.sub2.sub.e4.get())>175 or locale.atof(self.sub2.sub.e4.get())<30:
-                    messagebox.showinfo('Message','Invalid input for lower rate limit\nshould be in the rannge 30-175ppm')
-                    return
-                if locale.atof(self.sub2.sub.e5.get())>3.2 or locale.atof(self.sub2.sub.e5.get())<0.5:
-                    messagebox.showinfo('Message','Invalid input for atrial amplitude\nshould be in the range 0.5-3.2V ')
-                    return
-                if locale.atof(self.sub2.sub.e6.get()) !=0.05:
-                    messagebox.showinfo('Message','Invalid input for atrial pulse width\n should be 0.05ms')
-                    return
-                
-                f.write("0\t0\t")
-                f.write(self.sub2.sub.e3.get())
-                f.write("\t")
-                f.write(self.sub2.sub.e4.get())
-                f.write("\t")
-                f.write(self.sub2.sub.e5.get())
-                f.write("\t")
-                f.write(self.sub2.sub.e6.get())
-                f.write("\t")
-                f.write("0\t0\t0\t0\t0\t0\t0")
-                f.close()
-                messagebox.showinfo('Message','Settings saved')
-                
-            if (self.variable.get()=="AAI"):
-                if locale.atof(self.sub2.sub.e3.get())>175 or locale.atof(self.sub2.sub.e3.get())<50:
-                    messagebox.showinfo('Message','Invalid input for upper rate limit\nshould be in the range 50-175ppm')
-                    return
-                if locale.atof(self.sub2.sub.e4.get())>175 or locale.atof(self.sub2.sub.e4.get())<30:
-                    messagebox.showinfo('Message','Invalid input for lower rate limit\nshould be in the rannge 30-175ppm')
-                    return
-                if locale.atof(self.sub2.sub.e5.get())>3.2 or locale.atof(self.sub2.sub.e5.get())<0.5:
-                    messagebox.showinfo('Message','Invalid input for atrial amplitude\nshould be in the range 0.5-3.2V ')
-                    return
-                if locale.atof(self.sub2.sub.e6.get()) !=0.05:
-                    messagebox.showinfo('Message','Invalid input for atrial pulse width\n should be 0.05ms')
-                    return
-                if locale.atof(self.sub2.sub.e7.get())>10 or locale.atof(self.sub2.sub.e7.get())<1:
-                    messagebox.showinfo('Message','Invalid input for ventricular sensitivity\nshould be in the rage 1.0-10.0mV')
-                    return
-                if locale.atof(self.sub2.sub.e10.get())>500 or locale.atof(self.sub2.sub.e10.get())<150:
-                    messagebox.showinfo('Message','Invalid input for ARP\nshould be in range 150-500ms')
-                    return
-                if locale.atof(self.sub2.sub.e11.get())>500 or locale.atof(self.sub2.sub.e11.get())<150:
-                    messagebox.showinfo('Message','Invalid input for PVARP\nshould be in range 150-500ms')
-                    return
-                if locale.atof(self.sub2.sub.e12.get())!=locale.atof(self.sub2.sub.e4.get()):
-                    messagebox.showinfo('Message','Invalid input for hysteresis\nshould be the same with lower rate limit')
-                    return
-                entry13=locale.atof(self.sub2.sub,e13.get())
-                if entry13!=0 and entry13!=3 and entry13!=6 and entry13!=9 and entry13!=12 and entry13!=15 and entry13!=18 and entry13!=21:
-                    messagebox.showinfo('Message','Invalid input for rate smoothing\nshould be one number of 0,3,6,9,12,15,18,21')
-                    return
-                f.write("0\t0\t")
-                f.write(self.sub2.sub.e3.get())
-                f.write("\t")
-                f.write(self.sub2.sub.e4.get())
-                f.write("\t")
-                f.write(self.sub2.sub.e5.get())
-                f.write("\t")
-                f.write(self.sub2.sub.e6.get())
-                f.write("\t")
-                f.write(self.sub2.sub.e7.get())
-                f.write("\t")
-                f.write(self.sub2.sub.e10.get())
-                f.write("\t")
-                f.write(self.sub2.sub.e11.get())
-                f.write("\t")
-                f.write(self.sub2.sub.e12.get())
-                f.write("\t")
-                f.write(self.sub2.sub.e13.get())
-                f.close()
-                messagebox.showinfo('Message','Settings saved')
-                
-            if (self.variable.get()=="VOO"):
-                if locale.atof(self.sub2.sub.e1.get())>7 or locale.atof(self.sub2.sub.e1.get())<3.5:
-                    messagebox.showinfo('Message','Invalid input for ventricular amplitude\nshould be in the range 3.5-7.0V')
-                    return
-                if locale.atof(self.sub2.sub.e2.get())>1.9 or locale.atof(self.sub2.sub.e2.get())<0.1:
-                    messagebox.showinfo('Message','Invalid input for ventricular pulse width\nshould be in the range 0.1-1.9ms')
-                    return
-                if locale.atof(self.sub2.sub.e3.get())>175 or locale.atof(self.sub2.sub.e3.get())<50:
-                    messagebox.showinfo('Message','Invalid input for upper rate limit\nshould be in the range 50-175ppm')
-                    return
-                if locale.atof(self.sub2.sub.e4.get())>175 or locale.atof(self.sub2.sub.e4.get())<30:
-                    messagebox.showinfo('Message','Invalid input for lower rate limit\nshould be in the rannge 30-175ppm')
-                    return
-                f.write(self.sub2.sub.e1.get())
-                f.write("\t")
-                f.write(self.sub2.sub.e2.get())
-                f.write("\t")
-                f.write(self.sub2.sub.e3.get())
-                f.write("\t")
-                f.write(self.sub2.sub.e4.get())
-                f.write("\t")
-                f.write("0\t0\t0\t0\t0\t0\t0\t0\t0")
-                f.close()
-                messagebox.showinfo('Message','Settings saved')
-
-            if (self.variable.get()=="VVI"):
-  
-                if locale.atof(self.sub2.sub.e1.get())>7 or locale.atof(self.sub2.sub.e1.get())<3.5:
-                    messagebox.showinfo('Message','Invalid input for ventricular amplitude\nshould be in the range 3.5-7.0V')
-                    return
-                if locale.atof(self.sub2.sub.e2.get())>1.9 or locale.atof(self.sub2.sub.e2.get())<0.1:
-                    messagebox.showinfo('Message','Invalid input for ventricular pulse width\nshould be in the range 0.1-1.9ms')
-                    return
-                if locale.atof(self.sub2.sub.e3.get())>175 or locale.atof(self.sub2.sub.e3.get())<50:
-                    messagebox.showinfo('Message','Invalid input for upper rate limit\nshould be in the range 50-175ppm')
-                    return
-                if locale.atof(self.sub2.sub.e4.get())>175 or locale.atof(self.sub2.sub.e4.get())<30:
-                    messagebox.showinfo('Message','Invalid input for lower rate limit\nshould be in the rannge 30-175ppm')
-                    return
-                if locale.atof(self.sub2.sub.e7.get())>10 or locale.atof(self.sub2.sub.e7.get())<1:
-                    messagebox.showinfo('Message','Invalid input for ventricular sensitivity\nshould be in the rage 1.0-10.0mV')
-                    return
-                if locale.atof(self.sub2.sub.e9.get())>500 or locale.atof(self.sub2.sub.e9.get())<150:
-                    messagebox.showinfo('Message','Invalid input for VRP\nshould be in range 150-500ms')
-                    return
-                if locale.atof(self.sub2.sub.e12.get())!=locale.atof(self.sub2.sub.e4.get()):
-                    messagebox.showinfo('Message','Invalid input for hysteresis\nshould be the same with lower rate limit')
-                    return
-                entry13=locale.atof(self.sub2.sub,e13.get())
-                if entry13!=0 and entry13!=3 and entry13!=6 and entry13!=9 and entry13!=12 and entry13!=15 and entry13!=18 and entry13!=21:
-                    messagebox.showinfo('Message','Invalid input for rate smoothing\nshould be one number of 0,3,6,9,12,15,18,21')
-                    return
-                f.write(self.sub2.sub.e1.get())
-                f.write("\t")
-                f.write(self.sub2.sub.e2.get())
-                f.write("\t")
-                f.write(self.sub2.sub.e3.get())
-                f.write("\t")
-                f.write(self.sub2.sub.e4.get())
-                f.write("\t")
-                f.write("0\t0")
-                f.write(self.sub2.sub.e7.get())
-                f.write("\t0\t")
-                f.write(self.sub2.sub.e9.get())
-                f.write("\t0\t0\t")
-                f.write(self.sub2.sub.e12.get())
-                f.write(self.sub2.sub.e13.get())
-                f.close()
-                messagebox.showinfo('Message','Settings saved')
-                         
+            f.write(self.sub2.sub.e1.get())
+            f.write("\t")
+            f.write(self.sub2.sub.e2.get())
+            f.write("\t")
+            f.write(self.sub2.sub.e3.get())
+            f.write("\t")
+            f.write(self.sub2.sub.e4.get())
+            f.close()
+            messagebox.showinfo('Message','Settings saved')
             
         def load():
             outname=self.name.replace("filename",self.tempname)
@@ -363,7 +236,7 @@ class Window(Frame):
                 messagebox.showinfo('Message','Password does not matched!')
             else:
                 count=0
-                f=open("D:/testcount.txt","r")
+                f=open("Z:/testcount.txt","r")
                 for line in f:
                     if count < 9:
                         count += 1
@@ -371,14 +244,14 @@ class Window(Frame):
                         messagebox.showinfo('Message','Amount of user reaches maximum')
                         f.close()
                         return
-                f=open("D:/testcount.txt","r")
+                f=open("Z:/testcount.txt","r")
                 for line in f:
                     line = line.strip().split("\t")
                     if self.sub1.e1.get() == line[0]:
                         messagebox.showinfo('Message','User name has been used')
                         f.close()
                         return
-                f=open("D:/testcount.txt","a")
+                f=open("Z:/testcount.txt","a")
                 f.write(self.sub1.e1.get())
                 f.write("\t")
                 f.write(self.sub1.e2.get())
@@ -426,13 +299,8 @@ class Window(Frame):
             self.mode_state = 0
             print("variable changed")
             if (self.variable.get()=="AOO"):
-                
                 self.sub2.sub.e1.config(state='disabled')
                 self.sub2.sub.e2.config(state='disabled')
-                self.sub2.sub.e3.config(state='normal')
-                self.sub2.sub.e4.config(state='normal')
-                self.sub2.sub.e5.config(state='normal')
-                self.sub2.sub.e6.config(state='normal')
                 self.sub2.sub.e7.config(state='disabled')
                 self.sub2.sub.e8.config(state='disabled')
                 self.sub2.sub.e9.config(state='disabled')
@@ -440,29 +308,12 @@ class Window(Frame):
                 self.sub2.sub.e11.config(state='disabled')
                 self.sub2.sub.e12.config(state='disabled')
                 self.sub2.sub.e13.config(state='disabled')
-              
             if (self.variable.get()=="AAI"):
-                
                 self.sub2.sub.e1.config(state='disabled')
                 self.sub2.sub.e2.config(state='disabled')
-                self.sub2.sub.e3.config(state='normal')
-                self.sub2.sub.e4.config(state='normal')
-                self.sub2.sub.e5.config(state='normal')
-                self.sub2.sub.e6.config(state='normal')
-                self.sub2.sub.e7.config(state='normal')
                 self.sub2.sub.e8.config(state='disabled')
                 self.sub2.sub.e9.config(state='disabled')
-                self.sub2.sub.e10.config(state='normal')
-                self.sub2.sub.e11.config(state='normal')
-                self.sub2.sub.e12.config(state='normal')
-                self.sub2.sub.e13.config(state='normal')
-              
             if (self.variable.get()=="VOO"):
-                
-                self.sub2.sub.e1.config(state='normal')
-                self.sub2.sub.e2.config(state='normal')
-                self.sub2.sub.e3.config(state='normal')
-                self.sub2.sub.e4.config(state='normal')
                 self.sub2.sub.e5.config(state='disabled')
                 self.sub2.sub.e6.config(state='disabled')
                 self.sub2.sub.e7.config(state='disabled')
@@ -472,35 +323,29 @@ class Window(Frame):
                 self.sub2.sub.e11.config(state='disabled')
                 self.sub2.sub.e12.config(state='disabled')
                 self.sub2.sub.e13.config(state='disabled')
-              
             if (self.variable.get()=="VVI"):
-                
-                self.sub2.sub.e1.config(state='normal')
-                self.sub2.sub.e2.config(state='normal')
-                self.sub2.sub.e3.config(state='normal')
-                self.sub2.sub.e4.config(state='normal')
                 self.sub2.sub.e5.config(state='disabled')
                 self.sub2.sub.e6.config(state='disabled')
-                self.sub2.sub.e7.config(state='normal')
                 self.sub2.sub.e8.config(state='disabled')
-                self.sub2.sub.e9.config(state='normal')
                 self.sub2.sub.e10.config(state='disabled')
                 self.sub2.sub.e11.config(state='disabled')
-                self.sub2.sub.e12.config(state='normal')
-                self.sub2.sub.e13.config(state='normal')
-                
+
         def thread_data_receiving():
             try:       
-                s = self.ser.read(2)
+                s = self.ser.read(4)
                 print("message received from simulink")
-                print(s[1])
+                print(s[2])
+                print(s[3])
             except:
                 pass
             if self.p_state == 0:
                 threading.Timer(0.1, thread_data_receiving).start()  
-
-
-
+        def unpacking_to_twouint8(number,pos):
+            low_bit = number % 256
+            high_bit = number // 256
+            self.proarray[pos] = low_bit
+            self.proarray[pos + 1] = hgih_bit
+            
             
         def send_bytearray(array):
             if self.p_state == 1:
@@ -519,7 +364,7 @@ class Window(Frame):
                     for p in ports: print(p[0])
                     #ser.port = p[0]
                     #ser.open()
-                    sent_arr = bytearray(array)
+                    sent_arr = array
                     #x = len(array)
                     print(sent_arr[0])
                     if self.ser.isOpen():
@@ -553,90 +398,104 @@ class Window(Frame):
                 self.pro_array = [0x16,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0]
                 print(self.sub2.sub.e1.get())
                 if (self.variable.get()=="VOO"):
-                    set_para(0, 1, 0, 0, 320, 250, 250, 0, 50, 15)
+                    set_para(0, 1, 0, 0,94, 1, 250, 0, 250, 0, 0, 50, 15)
                 if (self.variable.get()=="AOO"):
-                    set_para(1,0,0,0,320,250,250,0,50,15)
+                    set_para(1,0,0,0,94,1,250,0 ,250,0,0,50,15)
                 if (self.variable.get()=="AAI"):
-                    set_para(1,0,1,0,320,250,250,1,50,15)
+                    set_para(1,0,1,0,94,1,250,0,250,0,1,50,15)
                 if (self.variable.get()=="VVI"):
-                    set_para(0,1,0,1,320,250,250,0,50,15)
+                    set_para(0,1,0,1,94,1,250,0,250,0,0,50,15)
 
                 self.mode_state == 1
             else:            
                 
                 if self.sub2.sub.e1.get() != "":
                     try:
-                        pro_array[1] = (int(self.sub2.sub.e1.get()))
+                        #pro_array[1] = (int(self.sub2.sub.e1.get()))
+                        pass
                     except:
                         pass
 
                 if self.sub2.sub.e2.get() != "":
                     try:
-                        pro_array[2] = (int(self.sub2.sub.e2.get()))
+                        #pro_array[2] = (int(self.sub2.sub.e2.get()))
+                        pass
                     except:
                         pass
                 if self.sub2.sub.e3.get() != "":
                     try:
-                        pro_array[3] = (int(self.sub2.sub.e3.get()))
+                        #pro_array[3] = (int(self.sub2.sub.e3.get()))
+                        pass
                     except:
                         pass
                 if self.sub2.sub.e4.get() != "":
                     try:
-                        pro_array[4] = (int(self.sub2.sub.e4.get()))
+                        #pro_array[4] = (int(self.sub2.sub.e4.get()))
+                        pass
                     except:
                         pass
                 if self.sub2.sub.e5.get() != "":
                     try:
-                        pro_array[5] = (int(self.sub2.sub.e5.get()))
+                        #pro_array[5] = (int(self.sub2.sub.e5.get()))
+                        pass
                     except:
                         pass
                 if self.sub2.sub.e6.get() != "":
                     try:
-                        pro_array[6] = (int(self.sub2.sub.e6.get()))
+                        #pro_array[6] = (int(self.sub2.sub.e6.get()))
+                        pass
                     except:
                         pass
                 if self.sub2.sub.e7.get() != "":
                     try:
-                        pro_array[7] = (int(self.sub2.sub.e7.get()))
+                        #pro_array[7] = (int(self.sub2.sub.e7.get()))
+                        pass
                     except:
                         pass
                 if self.sub2.sub.e8.get() != "":
                     try:
-                        pro_array[8] = (int(self.sub2.sub.e8.get()))
+                        #pro_array[8] = (int(self.sub2.sub.e8.get()))
+                        pass
                     except:
                         pass
                 if self.sub2.sub.e9.get() != "":
                     try:
-                        pro_array[9] = (int(self.sub2.sub.e9.get()))
+                        #pro_array[4] = (int(self.sub2.sub.e9.get()))
+                        unpacking_to_twouint8((int(self.sub2.sub.e9.get())),4)
                     except:
                         pass
                 if self.sub2.sub.e10.get() != "":
                     try:
-                        pro_array[10] = (int(self.sub2.sub.e10.get()))
+                       #pro_array[6] = (int(self.sub2.sub.e10.get()))
+                        unpacking_to_twouint8((int(self.sub2.sub.e10.get())),6)
                     except:
                         pass
                 if self.sub2.sub.e11.get() != "":
                     try:
-                        pro_array[11] = (int(self.sub2.sub.e11.get()))
+                        #pro_array[8] = (int(self.sub2.sub.e11.get()))
+                        unpacking_to_twouint8((int(self.sub2.sub.e11.get())),8)
                     except:
                         pass
 
                 if self.sub2.sub.e12.get() != "":
                     try:
-                        pro_array[12] = (int(self.sub2.sub.e12.get()))
+                        #pro_array[10] = (int(self.sub2.sub.e12.get()))
+                        pass
                     except:
                         pass
 
                 if self.sub2.sub.e13.get() != "":
                     try:
-                        pro_array[13] = (int(self.sub2.sub.e13.get()))
+                        #pro_array[13] = (int(self.sub2.sub.e13.get()))
+                        pass
                     except:
                         pass
                 
             send_bytearray(self.pro_array)
+            print(self.pro_array)
         #added  
         def clicked_log1( ):
-            file=open("D:/testcount.txt","r")
+            file=open("Z:/testcount.txt","r")
             a=0
             for line in file:
                 line = line.strip().split("\t")
