@@ -8,6 +8,8 @@ import threading
 import queue
 import time, threading
 import locale
+import matplotlib.pyplot as plt 
+
 
 class Window(Frame):
 
@@ -25,6 +27,9 @@ class Window(Frame):
         self.pro_array = []
         self.mode_state = 0
         self.ser = serial.Serial()
+        self.counter = 0
+        self.x_arry = []
+        self.y_arry = []
 
 ## wasted testing garbage
         #self.queue1 = queue.Queue()
@@ -234,7 +239,6 @@ class Window(Frame):
                 f.write(self.sub2.sub.e13.get())
                 f.close()
                 messagebox.showinfo('Message','Settings saved')
-                         
             
         def load():
             outname=self.name.replace("filename",self.tempname)
@@ -399,6 +403,9 @@ class Window(Frame):
                     except:
                         pass
                     messagebox.showinfo('Message','Device plugged out')
+                    self.x_arry = []
+                    self.y_arry = []
+                    self.counter = 0
                     self.p_state = 1
             else:
                 if self.p_state == 1:
@@ -408,15 +415,18 @@ class Window(Frame):
                     for p in ports: print(p[0])
                     self.ser.port = p[0]
                     self.ser.open()
-                   # x = b"\x16\x16\x16\x16\x16"
+                    # x = b"\x16\x16\x16\x16\x16"
                     #x = len(array)
                     #print(x[0])
                     if self.ser.isOpen():
                         messagebox.showinfo('Message','Device plugged in ')    
-                       # ser.write(b"\x16\x16\x16\x16\x16")
+                    # ser.write(b"\x16\x16\x16\x16\x16")
+                    self.counter = 0
                     self.p_state = 0
+                    #start data receiving
                     thread_data_receiving()
             
+
 
             threading.Timer(1, init_serial).start()  
 
@@ -494,12 +504,20 @@ class Window(Frame):
                 s = self.ser.read(2)
                 print("message received from simulink")
                 print(s[1])
+
+                self.x_arry.append(str(self.counter))
+                self.y_arry.append(s[1])
+                self.counter = self.counter + 1
+   
+                
+                
+                
             except:
                 pass
             if self.p_state == 0:
-                threading.Timer(0.1, thread_data_receiving).start()  
+                threading.Timer(0.01, thread_data_receiving).start()  
 
-
+        
 
             
         def send_bytearray(array):
@@ -568,6 +586,9 @@ class Window(Frame):
                     set_para(1,0,1,0,94,1,250,0,250,0,1,50,15)
                 if (self.variable.get()=="VVI"):
                     set_para(0,1,0,1,94,1,250,0,250,0,0,50,15)
+
+
+                    
 
                 self.mode_state == 1
             else:            
@@ -656,8 +677,16 @@ class Window(Frame):
                         pass
                 
             send_bytearray(self.pro_array)
+
+        def egram_display():
+
+            plt.plot(self.x_arry[(self.counter - 21):(self.counter - 1)], self.y_arry[(self.counter - 21):(self.counter - 1)])
+            
+            plt.ylabel("adc")
+            plt.show()
+
         #added  
-        def clicked_log1( ):
+        def clicked_log1():
             file=open("Z:/testcount.txt","r")
             a=0
             for line in file:
@@ -692,6 +721,9 @@ class Window(Frame):
                         send_button.place(x=100,y=370)
                         cancel_button = Button(self.sub2.sub,text = "Cancel",command=self.sub2.sub.destroy)
                         cancel_button.place(x=160,y=370)
+                        display_button = Button(self.sub2.sub,text = "Display",command=egram_display)
+                        display_button.place(x=380,y=370)
+  
                         saveButton=Button(self.sub2.sub,text="Save current setting",command=save)
                         saveButton.place(x=220,y=370)
 
