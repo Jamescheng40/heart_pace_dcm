@@ -18,7 +18,7 @@ class Window(Frame):
         self.master = master
         self.b = 0
         self.tempname=""
-        self.name="D:/filename.txt"
+        self.name="Z:/filename.txt"
         self.init_window()
         self.variable = ""
         self.p_state = 0
@@ -363,7 +363,7 @@ class Window(Frame):
                 messagebox.showinfo('Message','Password does not matched!')
             else:
                 count=0
-                f=open("D:/testcount.txt","r")
+                f=open("Z:/testcount.txt","r")
                 for line in f:
                     if count < 9:
                         count += 1
@@ -371,14 +371,14 @@ class Window(Frame):
                         messagebox.showinfo('Message','Amount of user reaches maximum')
                         f.close()
                         return
-                f=open("D:/testcount.txt","r")
+                f=open("Z:/testcount.txt","r")
                 for line in f:
                     line = line.strip().split("\t")
                     if self.sub1.e1.get() == line[0]:
                         messagebox.showinfo('Message','User name has been used')
                         f.close()
                         return
-                f=open("D:/testcount.txt","a")
+                f=open("Z:/testcount.txt","a")
                 f.write(self.sub1.e1.get())
                 f.write("\t")
                 f.write(self.sub1.e2.get())
@@ -529,21 +529,29 @@ class Window(Frame):
                 #ser.close()
 
 
-        def set_para(atr_pace, ventri_pace, atr_sensing, vent_sensing, vrp, arp, pvarp, hystersis, ven_cmp_pwm, art_cmp):
+        def set_para(atr_pace, ventri_pace, atr_sensing, vent_sensing, vrp_l,vrp_h, arp_l, arp_h, pvarp_l,pvarp_h, hystersis, ven_cmp_pwm, art_cmp):
             self.pro_array[1] = atr_pace
             self.pro_array[2] = ventri_pace
             self.pro_array[3] = atr_sensing
             self.pro_array[4] = vent_sensing
-            self.pro_array[5] = vrp
-            self.pro_array[6] = arp
-            self.pro_array[7] = pvarp
-            self.pro_array[8] = ven_cmp_pwm
-            self.pro_array[9] = art_cmp
-
+            self.pro_array[5] = vrp_l
+            self.pro_array[6] = vrp_h
+            self.pro_array[7] = arp_l
+            self.pro_array[8] = arp_h
+            self.pro_array[9] = pvarp_l
+            self.pro_array[10] = pvarp_h
+            self.pro_array[11] = hystersis
+            self.pro_array[12] = ven_cmp_pwm
+            self.pro_array[13] = art_cmp
             
             
+        def unpacking(numb,pos):
+            low_bit = numb % 256
+            high_bit = numb // 256
+            self.pro_array[pos] = low_bit
+            self.pro_array[pos] = high_bit
 
-          
+        
                 
         def process_array():
             #thread_data_receiving()
@@ -553,90 +561,104 @@ class Window(Frame):
                 self.pro_array = [0x16,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0]
                 print(self.sub2.sub.e1.get())
                 if (self.variable.get()=="VOO"):
-                    set_para(0, 1, 0, 0, 320, 250, 250, 0, 50, 15)
+                    set_para(0, 1, 0, 0, 94, 1,250,0, 250,0, 0, 50, 15)
                 if (self.variable.get()=="AOO"):
-                    set_para(1,0,0,0,320,250,250,0,50,15)
+                    set_para(1,0,0,0,94,1,250,0,250,0,0,50,15)
                 if (self.variable.get()=="AAI"):
-                    set_para(1,0,1,0,320,250,250,1,50,15)
+                    set_para(1,0,1,0,94,1,250,0,250,0,1,50,15)
                 if (self.variable.get()=="VVI"):
-                    set_para(0,1,0,1,320,250,250,0,50,15)
+                    set_para(0,1,0,1,94,1,250,0,250,0,0,50,15)
 
                 self.mode_state == 1
             else:            
                 
                 if self.sub2.sub.e1.get() != "":
                     try:
-                        pro_array[1] = (int(self.sub2.sub.e1.get()))
+                        #pro_array[1] = (int(self.sub2.sub.e1.get()))
+                        pass
                     except:
                         pass
 
                 if self.sub2.sub.e2.get() != "":
                     try:
-                        pro_array[2] = (int(self.sub2.sub.e2.get()))
+                        #pro_array[2] = (int(self.sub2.sub.e2.get()))
+                        pass
                     except:
                         pass
                 if self.sub2.sub.e3.get() != "":
                     try:
-                        pro_array[3] = (int(self.sub2.sub.e3.get()))
+                        #pro_array[3] = (int(self.sub2.sub.e3.get()))
+                        pass
                     except:
                         pass
                 if self.sub2.sub.e4.get() != "":
                     try:
-                        pro_array[4] = (int(self.sub2.sub.e4.get()))
+                        #pro_array[4] = (int(self.sub2.sub.e4.get()))
+                        pass
                     except:
                         pass
                 if self.sub2.sub.e5.get() != "":
                     try:
-                        pro_array[5] = (int(self.sub2.sub.e5.get()))
+                        #pro_array[5] = (int(self.sub2.sub.e5.get()))
+                        pass
                     except:
                         pass
                 if self.sub2.sub.e6.get() != "":
                     try:
-                        pro_array[6] = (int(self.sub2.sub.e6.get()))
+                        #pro_array[6] = (int(self.sub2.sub.e6.get()))
+                        pass
                     except:
                         pass
                 if self.sub2.sub.e7.get() != "":
                     try:
-                        pro_array[7] = (int(self.sub2.sub.e7.get()))
+                        #pro_array[7] = (int(self.sub2.sub.e7.get()))
+                        pass
                     except:
                         pass
                 if self.sub2.sub.e8.get() != "":
                     try:
-                        pro_array[8] = (int(self.sub2.sub.e8.get()))
+                        #pro_array[8] = (int(self.sub2.sub.e8.get()))
+                        pass
                     except:
                         pass
                 if self.sub2.sub.e9.get() != "":
                     try:
-                        pro_array[9] = (int(self.sub2.sub.e9.get()))
+                        #pro_array[9] = (int(self.sub2.sub.e9.get()))
+                        unpacking((int(self.sub2.sub.e9.get())),4)
                     except:
                         pass
                 if self.sub2.sub.e10.get() != "":
                     try:
-                        pro_array[10] = (int(self.sub2.sub.e10.get()))
+                        #pro_array[10] = (int(self.sub2.sub.e10.get()))
+                        unpacking((int(self.sub2.sub.e10.get())),6)
                     except:
                         pass
                 if self.sub2.sub.e11.get() != "":
                     try:
-                        pro_array[11] = (int(self.sub2.sub.e11.get()))
+                        #pro_array[11] = (int(self.sub2.sub.e11.get()))
+                        unpacking((int(self.sub2.sub.e11.get())),8)
+                        pass
                     except:
                         pass
 
                 if self.sub2.sub.e12.get() != "":
                     try:
-                        pro_array[12] = (int(self.sub2.sub.e12.get()))
+                        #pro_array[12] = (int(self.sub2.sub.e12.get()))
+                        pass
                     except:
                         pass
 
                 if self.sub2.sub.e13.get() != "":
                     try:
-                        pro_array[13] = (int(self.sub2.sub.e13.get()))
+                        #pro_array[13] = (int(self.sub2.sub.e13.get()))
+                        pass
                     except:
                         pass
                 
             send_bytearray(self.pro_array)
         #added  
         def clicked_log1( ):
-            file=open("D:/testcount.txt","r")
+            file=open("Z:/testcount.txt","r")
             a=0
             for line in file:
                 line = line.strip().split("\t")
