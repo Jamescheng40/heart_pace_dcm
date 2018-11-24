@@ -567,7 +567,8 @@ class Window(Frame):
             low_bit = numb % 256
             high_bit = numb // 256
             self.pro_array[pos] = low_bit
-            self.pro_array[pos] = high_bit
+
+            self.pro_array[pos + 1] = high_bit
 
         
                 
@@ -576,18 +577,108 @@ class Window(Frame):
 
 
             if (self.mode_state == 0):            
-                self.pro_array = [0x16,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0]
+                self.pro_array = [0x16,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0]
                 print(self.sub2.sub.e1.get())
                 if (self.variable.get()=="VOO"):
-                    set_para(0, 1, 0, 0, 94, 1,250,0, 250,0, 0, 50, 15)
+                    set_para(0, 1, 0, 0, 94, 1,250,0, 250,0, 0, 70, 70)
                 if (self.variable.get()=="AOO"):
-                    set_para(1,0,0,0,94,1,250,0,250,0,0,50,15)
+                    set_para(1,0,0,0,94,1,250,0,250,0,0,70,70)
                 if (self.variable.get()=="AAI"):
-                    set_para(1,0,1,0,94,1,250,0,250,0,1,50,15)
+                    set_para(1,0,1,0,94,1,250,0,250,0,1,70,70)
                 if (self.variable.get()=="VVI"):
-                    set_para(0,1,0,1,94,1,250,0,250,0,0,50,15)
+                    set_para(0,1,0,1,94,1,250,0,250,0,1,70,70)
 
+                
+                if self.sub2.sub.e1.get() != "":
+                    try:
+                        self.pro_array[14] = (int(self.sub2.sub.e1.get()))
+                        
+                    except:
+                        self.pro_array[14] = 0
 
+                        pass
+
+                if self.sub2.sub.e2.get() != "":
+                    try:
+                        self.pro_array[15] = (int(self.sub2.sub.e2.get()))
+                        
+                    except:
+                        self.pro_array[15] = 0
+
+                if self.sub2.sub.e3.get() != "":
+                    try:
+                        self.pro_array[16] = (int(self.sub2.sub.e3.get()))
+                        pass
+                    except:
+                        self.pro_array[16] = 0
+                      
+                if self.sub2.sub.e4.get() != "":
+                    try:
+                        self.pro_array[17] = (int(self.sub2.sub.e4.get()))
+                        pass
+                    except:
+                        self.pro_array[17] = 0                        
+
+                if self.sub2.sub.e5.get() != "":
+                    try:
+                        self.pro_array[18] = (int(self.sub2.sub.e5.get()))
+                        pass
+                    except:
+                        self.pro_array[18] = 0                         
+                if self.sub2.sub.e6.get() != "":
+                    try:
+                        self.pro_array[19] = (int(self.sub2.sub.e6.get()))
+                        pass
+                    except:
+                        self.pro_array[19] = 0 
+                if self.sub2.sub.e7.get() != "":
+                    try:
+                        self.pro_array[20] = (int(self.sub2.sub.e7.get()))
+                        pass
+                    except:
+                        self.pro_array[20] = 0 
+                if self.sub2.sub.e8.get() != "":
+                    try:
+                        self.pro_array[21] = (int(self.sub2.sub.e8.get()))
+                        pass
+                    except:
+                        self.pro_array[21] = 0 
+                if self.sub2.sub.e9.get() != "":
+                    try:
+                        
+                        unpacking((int(self.sub2.sub.e9.get())),5)
+                        print("lu guo")
+                    except:
+                        pass
+                if self.sub2.sub.e10.get() != "":
+                    try:
+                        #pro_array[10] = (int(self.sub2.sub.e10.get()))
+                        unpacking((int(self.sub2.sub.e10.get())),7)
+                    except:
+                        pass
+                if self.sub2.sub.e11.get() != "":
+                    try:
+                        #pro_array[11] = (int(self.sub2.sub.e11.get()))
+                        unpacking((int(self.sub2.sub.e11.get())),9)
+                        pass
+                    except:
+                        pass
+
+                if self.sub2.sub.e12.get() != "":
+                    try:
+                        self.pro_array[10] = (int(self.sub2.sub.e12.get()))
+                        pass
+                    except:
+                        self.pro_array[10] = (int(self.sub2.sub.e12.get()))
+                        pass
+
+                if self.sub2.sub.e13.get() != "":
+                    try:
+                        self.pro_array[22] = (int(self.sub2.sub.e12.get()))
+                        pass
+                    except:
+                        self.pro_array[22] = (int(self.sub2.sub.e12.get()))
+                        pass
                     
 
                 self.mode_state == 1
@@ -595,87 +686,97 @@ class Window(Frame):
                 
                 if self.sub2.sub.e1.get() != "":
                     try:
-                        #pro_array[1] = (int(self.sub2.sub.e1.get()))
-                        pass
+                        self.pro_array[14] = (int(self.sub2.sub.e1.get()))
+                        
                     except:
+                        self.pro_array[14] = 0
+
                         pass
 
                 if self.sub2.sub.e2.get() != "":
                     try:
-                        #pro_array[2] = (int(self.sub2.sub.e2.get()))
-                        pass
+                        self.pro_array[15] = (int(self.sub2.sub.e2.get()))
+                        
                     except:
-                        pass
+                        self.pro_array[15] = 0
+
                 if self.sub2.sub.e3.get() != "":
                     try:
-                        #pro_array[3] = (int(self.sub2.sub.e3.get()))
+                        self.pro_array[16] = (int(self.sub2.sub.e3.get()))
                         pass
                     except:
-                        pass
+                        self.pro_array[16] = 0
+                      
                 if self.sub2.sub.e4.get() != "":
                     try:
-                        #pro_array[4] = (int(self.sub2.sub.e4.get()))
+                        self.pro_array[17] = (int(self.sub2.sub.e4.get()))
                         pass
                     except:
-                        pass
+                        self.pro_array[17] = 0                        
+
                 if self.sub2.sub.e5.get() != "":
                     try:
-                        #pro_array[5] = (int(self.sub2.sub.e5.get()))
+                        self.pro_array[18] = (int(self.sub2.sub.e5.get()))
                         pass
                     except:
-                        pass
+                        self.pro_array[18] = 0                         
                 if self.sub2.sub.e6.get() != "":
                     try:
-                        #pro_array[6] = (int(self.sub2.sub.e6.get()))
+                        self.pro_array[19] = (int(self.sub2.sub.e6.get()))
                         pass
                     except:
-                        pass
+                        self.pro_array[19] = 0 
                 if self.sub2.sub.e7.get() != "":
                     try:
-                        #pro_array[7] = (int(self.sub2.sub.e7.get()))
+                        self.pro_array[20] = (int(self.sub2.sub.e7.get()))
                         pass
                     except:
-                        pass
+                        self.pro_array[20] = 0 
                 if self.sub2.sub.e8.get() != "":
                     try:
-                        #pro_array[8] = (int(self.sub2.sub.e8.get()))
+                        self.pro_array[21] = (int(self.sub2.sub.e8.get()))
                         pass
                     except:
-                        pass
+                        self.pro_array[21] = 0 
                 if self.sub2.sub.e9.get() != "":
                     try:
-                        #pro_array[9] = (int(self.sub2.sub.e9.get()))
-                        unpacking((int(self.sub2.sub.e9.get())),4)
+                        
+                        unpacking((int(self.sub2.sub.e9.get())),5)
+                        print("lu guo")
                     except:
                         pass
                 if self.sub2.sub.e10.get() != "":
                     try:
                         #pro_array[10] = (int(self.sub2.sub.e10.get()))
-                        unpacking((int(self.sub2.sub.e10.get())),6)
+                        unpacking((int(self.sub2.sub.e10.get())),7)
                     except:
                         pass
                 if self.sub2.sub.e11.get() != "":
                     try:
                         #pro_array[11] = (int(self.sub2.sub.e11.get()))
-                        unpacking((int(self.sub2.sub.e11.get())),8)
+                        unpacking((int(self.sub2.sub.e11.get())),9)
                         pass
                     except:
                         pass
 
                 if self.sub2.sub.e12.get() != "":
                     try:
-                        #pro_array[12] = (int(self.sub2.sub.e12.get()))
+                        self.pro_array[10] = (int(self.sub2.sub.e12.get()))
                         pass
                     except:
+                        self.pro_array[10] = (int(self.sub2.sub.e12.get()))
                         pass
 
                 if self.sub2.sub.e13.get() != "":
                     try:
-                        #pro_array[13] = (int(self.sub2.sub.e13.get()))
+                        self.pro_array[22] = (int(self.sub2.sub.e12.get()))
                         pass
                     except:
+                        self.pro_array[22] = (int(self.sub2.sub.e12.get()))
                         pass
-                
+                    
+
+           
             send_bytearray(self.pro_array)
 
         def egram_display():
@@ -723,10 +824,12 @@ class Window(Frame):
                         cancel_button.place(x=160,y=370)
                         display_button = Button(self.sub2.sub,text = "Display",command=egram_display)
                         display_button.place(x=380,y=370)
-  
+
+
+
                         saveButton=Button(self.sub2.sub,text="Save current setting",command=save)
                         saveButton.place(x=220,y=370)
-
+                        
                         ##Parameter Label
                         voo=Label(self.sub2.sub, text="Ventricular Amplitude:")
                         voo.place(x=30,y=100)
