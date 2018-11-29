@@ -501,12 +501,24 @@ class Window(Frame):
                 
         def thread_data_receiving():
             try:       
-                s = self.ser.read(2)
+                s = self.ser.read(9)
                 print("message received from simulink")
-                print(s[1])
+                
+                #x = s[8]
+                #y = s[9] + s[10] + s[11] + s[12] + s[13] + s[14] + s[15]
+                #x = s[15]
+                #y = s[8]+ s[9] + s[10] + s[11] + s[12] + s[13] + s[14]
+                #m = pow(2, x-155)
+                #m1 = y + pow(2,24)
+                a = s[0] ^ (s[1] << 8)
+               
+                #total = m * m1
+                print(a)
+                
+                #print(x+y)
 
                 self.x_arry.append(str(self.counter))
-                self.y_arry.append(s[1])
+                self.y_arry.append(a)
                 self.counter = self.counter + 1
    
                 
@@ -600,49 +612,53 @@ class Window(Frame):
 
                 if self.sub2.sub.e2.get() != "":
                     try:
-                        self.pro_array[15] = (int(self.sub2.sub.e2.get()))
+                        
+                        unpacking((int(self.sub2.sub.e2.get())), 15)
                         
                     except:
                         self.pro_array[15] = 0
+                        self.pro_array[16] = 0
 
                 if self.sub2.sub.e3.get() != "":
                     try:
-                        self.pro_array[16] = (int(self.sub2.sub.e3.get()))
+                        self.pro_array[17] = (int(self.sub2.sub.e3.get()))
                         pass
                     except:
-                        self.pro_array[16] = 0
+                        self.pro_array[17] = 0
                       
                 if self.sub2.sub.e4.get() != "":
                     try:
-                        self.pro_array[17] = (int(self.sub2.sub.e4.get()))
+                        self.pro_array[18] = (int(self.sub2.sub.e4.get()))
                         pass
                     except:
-                        self.pro_array[17] = 0                        
+                        self.pro_array[18] = 0                        
 
                 if self.sub2.sub.e5.get() != "":
                     try:
-                        self.pro_array[18] = (int(self.sub2.sub.e5.get()))
+                        self.pro_array[19] = (int(self.sub2.sub.e5.get()))
                         pass
                     except:
-                        self.pro_array[18] = 0                         
+                        self.pro_array[19] = 0                         
                 if self.sub2.sub.e6.get() != "":
                     try:
-                        self.pro_array[19] = (int(self.sub2.sub.e6.get()))
+                        self.pro_array[20] = (int(self.sub2.sub.e6.get()))
+                        unpacking((int(self.sub2.sub.e6.get())), 20)
                         pass
                     except:
-                        self.pro_array[19] = 0 
+                        self.pro_array[20] = 0
+                        self.pro_array[21] = 0
                 if self.sub2.sub.e7.get() != "":
                     try:
-                        self.pro_array[20] = (int(self.sub2.sub.e7.get()))
+                        self.pro_array[22] = (int(self.sub2.sub.e7.get()))
                         pass
                     except:
-                        self.pro_array[20] = 0 
+                        self.pro_array[22] = 0 
                 if self.sub2.sub.e8.get() != "":
                     try:
-                        self.pro_array[21] = (int(self.sub2.sub.e8.get()))
+                        self.pro_array[23] = (int(self.sub2.sub.e8.get()))
                         pass
                     except:
-                        self.pro_array[21] = 0 
+                        self.pro_array[23] = 0 
                 if self.sub2.sub.e9.get() != "":
                     try:
                         
@@ -674,10 +690,10 @@ class Window(Frame):
 
                 if self.sub2.sub.e13.get() != "":
                     try:
-                        self.pro_array[22] = (int(self.sub2.sub.e12.get()))
+                        self.pro_array[24] = (int(self.sub2.sub.e12.get()))
                         pass
                     except:
-                        self.pro_array[22] = (int(self.sub2.sub.e12.get()))
+                        self.pro_array[24] = (int(self.sub2.sub.e12.get()))
                         pass
                     
 
@@ -695,49 +711,53 @@ class Window(Frame):
 
                 if self.sub2.sub.e2.get() != "":
                     try:
-                        self.pro_array[15] = (int(self.sub2.sub.e2.get()))
+                        
+                        unpacking((int(self.sub2.sub.e2.get())), 15)
                         
                     except:
                         self.pro_array[15] = 0
+                        self.pro_array[16] = 0
 
                 if self.sub2.sub.e3.get() != "":
                     try:
-                        self.pro_array[16] = (int(self.sub2.sub.e3.get()))
+                        self.pro_array[17] = (int(self.sub2.sub.e3.get()))
                         pass
                     except:
-                        self.pro_array[16] = 0
+                        self.pro_array[17] = 0
                       
                 if self.sub2.sub.e4.get() != "":
                     try:
-                        self.pro_array[17] = (int(self.sub2.sub.e4.get()))
+                        self.pro_array[18] = (int(self.sub2.sub.e4.get()))
                         pass
                     except:
-                        self.pro_array[17] = 0                        
+                        self.pro_array[18] = 0                        
 
                 if self.sub2.sub.e5.get() != "":
                     try:
-                        self.pro_array[18] = (int(self.sub2.sub.e5.get()))
+                        self.pro_array[19] = (int(self.sub2.sub.e5.get()))
                         pass
                     except:
-                        self.pro_array[18] = 0                         
+                        self.pro_array[19] = 0                         
                 if self.sub2.sub.e6.get() != "":
                     try:
-                        self.pro_array[19] = (int(self.sub2.sub.e6.get()))
+                        self.pro_array[20] = (int(self.sub2.sub.e6.get()))
+                        unpacking((int(self.sub2.sub.e6.get())), 20)
                         pass
                     except:
-                        self.pro_array[19] = 0 
+                        self.pro_array[20] = 0
+                        self.pro_array[21] = 0
                 if self.sub2.sub.e7.get() != "":
                     try:
-                        self.pro_array[20] = (int(self.sub2.sub.e7.get()))
+                        self.pro_array[22] = (int(self.sub2.sub.e7.get()))
                         pass
                     except:
-                        self.pro_array[20] = 0 
+                        self.pro_array[22] = 0 
                 if self.sub2.sub.e8.get() != "":
                     try:
-                        self.pro_array[21] = (int(self.sub2.sub.e8.get()))
+                        self.pro_array[23] = (int(self.sub2.sub.e8.get()))
                         pass
                     except:
-                        self.pro_array[21] = 0 
+                        self.pro_array[23] = 0 
                 if self.sub2.sub.e9.get() != "":
                     try:
                         
@@ -769,12 +789,13 @@ class Window(Frame):
 
                 if self.sub2.sub.e13.get() != "":
                     try:
-                        self.pro_array[22] = (int(self.sub2.sub.e12.get()))
+                        self.pro_array[24] = (int(self.sub2.sub.e12.get()))
                         pass
                     except:
-                        self.pro_array[22] = (int(self.sub2.sub.e12.get()))
+                        self.pro_array[24] = (int(self.sub2.sub.e12.get()))
                         pass
                     
+
 
            
             send_bytearray(self.pro_array)
