@@ -9,7 +9,7 @@ import queue
 import time, threading
 import locale
 import matplotlib.pyplot as plt 
-
+import struct
 
 class Window(Frame):
 
@@ -498,10 +498,11 @@ class Window(Frame):
                 self.sub2.sub.e11.config(state='disabled')
                 self.sub2.sub.e12.config(state='normal')
                 self.sub2.sub.e13.config(state='normal')
-                
+        def interpret_float(x):                
+            return struct.unpack('>d', x[4:] + x[:4])
         def thread_data_receiving():
             try:       
-                s = self.ser.read(9)
+                s = self.ser.read(8)
                 print("message received from simulink")
                 
                 #x = s[8]
@@ -510,15 +511,23 @@ class Window(Frame):
                 #y = s[8]+ s[9] + s[10] + s[11] + s[12] + s[13] + s[14]
                 #m = pow(2, x-155)
                 #m1 = y + pow(2,24)
-                a = s[0] ^ (s[1] << 8)
+                #a = s[0] ^ (s[1] << 8)
                
                 #total = m * m1
-                print(a)
-                
+                a = struct.unpack('d', s)
+                print(struct.unpack('d', s))                
                 #print(x+y)
+            
+                
 
                 self.x_arry.append(str(self.counter))
-                self.y_arry.append(a)
+                if(a[0] >= 50 ):
+                    self.y_arry.append(0.5)
+                elif(a[0] <= -50):
+                    self.y_arry.append(-0.5)
+                else:
+                    self.y_arry.append(a[0])
+                
                 self.counter = self.counter + 1
    
                 
@@ -802,7 +811,7 @@ class Window(Frame):
 
         def egram_display():
 
-            plt.plot(self.x_arry[(self.counter - 21):(self.counter - 1)], self.y_arry[(self.counter - 21):(self.counter - 1)])
+            plt.plot(self.x_arry[self.counter - 50: self.counter], self.y_arry[self.counter - 50: self.counter])
             
             plt.ylabel("adc")
             plt.show()
