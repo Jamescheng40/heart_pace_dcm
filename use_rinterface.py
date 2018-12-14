@@ -10,8 +10,11 @@ import time, threading
 import locale
 import matplotlib.pyplot as plt 
 import struct
+import matplotlib.animation as anim
+import numpy as np
 
 class Window(Frame):
+
 
     
 
@@ -23,13 +26,23 @@ class Window(Frame):
         self.name="Z:/filename.txt"
         self.init_window()
         self.variable = ""
+
         self.p_state = 0
         self.pro_array = []
         self.mode_state = 0
         self.ser = serial.Serial()
         self.counter = 0
-        self.x_arry = []
-        self.y_arry = []
+        self.x_arry = [0,1,2,3,4,5,6,7,8,9,10]
+        self.y_arry = [0,5,-5,0,0,0,0,0,0,0,0]
+        self.cbt_state = IntVar()
+        self.cbt_state1 = IntVar()
+        self.egram_press = 0
+
+        #self.hl, = plt.plot([],[])
+        
+        
+        #plt.ion()
+
 
 ## wasted testing garbage
         #self.queue1 = queue.Queue()
@@ -501,42 +514,38 @@ class Window(Frame):
         def interpret_float(x):                
             return struct.unpack('>d', x[4:] + x[:4])
         def thread_data_receiving():
-            try:       
+
+            
+
+            try:
                 s = self.ser.read(8)
                 print("message received from simulink")
-                
-                #x = s[8]
-                #y = s[9] + s[10] + s[11] + s[12] + s[13] + s[14] + s[15]
-                #x = s[15]
-                #y = s[8]+ s[9] + s[10] + s[11] + s[12] + s[13] + s[14]
-                #m = pow(2, x-155)
-                #m1 = y + pow(2,24)
-                #a = s[0] ^ (s[1] << 8)
-               
-                #total = m * m1
+            
                 a = struct.unpack('d', s)
                 print(struct.unpack('d', s))                
-                #print(x+y)
+ 
             
                 
-
+        
                 self.x_arry.append(str(self.counter))
+
                 if(a[0] >= 50 ):
+
                     self.y_arry.append(0.5)
                 elif(a[0] <= -50):
+
                     self.y_arry.append(-0.5)
                 else:
+
                     self.y_arry.append(a[0])
-                
+
                 self.counter = self.counter + 1
-   
-                
-                
-                
+             
             except:
                 pass
             if self.p_state == 0:
-                threading.Timer(0.01, thread_data_receiving).start()  
+                #plt.show(block=True)
+                threading.Timer(0.001, thread_data_receiving).start()  
 
         
 
@@ -598,7 +607,7 @@ class Window(Frame):
 
 
             if (self.mode_state == 0):            
-                self.pro_array = [0x16,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0]
+                self.pro_array = [0x16,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0, 0x0, 0x0,0x0,0x0,0x0,0x0,0x0,0x0]
                 print(self.sub2.sub.e1.get())
                 if (self.variable.get()=="VOO"):
                     set_para(0, 1, 0, 0, 94, 1,250,0, 250,0, 0, 70, 70)
@@ -691,10 +700,10 @@ class Window(Frame):
 
                 if self.sub2.sub.e12.get() != "":
                     try:
-                        self.pro_array[10] = (int(self.sub2.sub.e12.get()))
+                        self.pro_array[11] = (int(self.sub2.sub.e12.get()))
                         pass
                     except:
-                        self.pro_array[10] = (int(self.sub2.sub.e12.get()))
+                        self.pro_array[11] = (int(self.sub2.sub.e12.get()))
                         pass
 
                 if self.sub2.sub.e13.get() != "":
@@ -704,6 +713,122 @@ class Window(Frame):
                     except:
                         self.pro_array[24] = (int(self.sub2.sub.e12.get()))
                         pass
+                    
+                if self.cbt_state.get() == 1:
+                    try:
+                        self.pro_array[25] = 1
+                        # basic parameters here
+                        self.pro_array[26] = 5
+                        self.pro_array[27] = 0
+                        self.pro_array[28] = 2
+                        self.pro_array[29] = 0
+                        self.pro_array[30] = 2
+                        self.pro_array[31] = 0
+                        self.pro_array[32] = 2
+                        #self.pro_array[33] = 0
+                        #self.pro_array[34] = 0
+                        #self.pro_array[35] = 0
+                        #self.pro_array[36] = 0
+                        #self.pro_array[37] = 0
+                        #self.pro_array[38] = 0
+                        #self.pro_array[39] = 0
+                        pass
+                    except:
+                        self.pro_array[25] = 1
+                        if self.sub2.sub.e14.get() != "":
+                            try:
+                                #self.pro_array[25] = (int(self.sub2.sub.e14.get()))
+                                unpacking((int(self.sub2.sub.e14.get())), 26)
+                                pass
+                            except:
+                                self.pro_array[26] = 5
+                                self.pro_array[27] = 0
+                                pass
+
+                        if self.sub2.sub.e15.get() != "":
+                            try:
+                                unpacking((int(self.sub2.sub.e15.get())), 28)
+                                pass
+                            except:
+                                self.pro_array[28] = 2
+                                self.pro_array[29] = 0
+                                pass
+
+                        if self.sub2.sub.e16.get() != "":
+                            try:
+                                unpacking((int(self.sub2.sub.e16.get())), 30)
+                                pass
+                            except:
+                                self.pro_array[30] = 2
+                                self.pro_array[31] = 0
+                                pass
+
+
+                        if self.sub2.sub.e17.get() != "":
+                            try:
+                                #unpacking((int(self.sub2.sub.e17.get())), 32)
+                                #self.pro_array[34] = 0
+                                #self.pro_array[35] = 0
+                                #self.pro_array[36] = 0
+                                #self.pro_array[37] = 0
+                                #self.pro_array[38] = 0
+                                #self.pro_array[39] = 0
+                                pass
+                            except:
+                                #self.pro_array[32] = 2
+                                #self.pro_array[33] = 0
+                                #self.pro_array[34] = 0
+                                #self.pro_array[35] = 0
+                                #self.pro_array[36] = 0
+                                #self.pro_array[37] = 0
+                               # self.pro_array[38] = 0
+                                #self.pro_array[39] = 0
+                                pass
+                      
+          
+                            
+                        
+                        pass
+                else:
+                    self.pro_array[25] = 0
+
+                if self.cbt_state1.get() == 1:
+                    try:
+                        self.pro_array[32] = 1
+                        if self.sub2.sub.e18.get() != "":
+                            try:
+                                #self.pro_array[25] = (int(self.sub2.sub.e14.get()))
+                                self.pro_array[33] = (int(self.sub2.sub.e18.get()))
+                                pass
+                            except:
+                                self.pro_array[33] = 150
+                                pass
+                        else:
+                            self.pro_array[33] = 150
+                         
+                        pass
+                    except:
+                        self.pro_array[32] = 0
+                        if self.sub2.sub.e14.get() != "":
+                            try:
+                                self.pro_array[33] = 150
+                                pass
+                            except:
+                                self.pro_array[33] = 150
+                                pass
+
+
+          
+                            
+                        
+                        pass
+                      
+          
+                else:
+                    self.pro_array[32] = 0
+                                        
+            
+
                     
 
                 self.mode_state == 1
@@ -803,19 +928,189 @@ class Window(Frame):
                     except:
                         self.pro_array[24] = (int(self.sub2.sub.e12.get()))
                         pass
-                    
+                            
+
+                if self.cbt_state.get() == 1:
+                    try:
+                        self.pro_array[25] = 1
+                        # basic parameters here
+                        self.pro_array[26] = 5
+                        self.pro_array[27] = 0
+                        self.pro_array[28] = 2
+                        self.pro_array[29] = 0
+                        self.pro_array[30] = 2
+                        self.pro_array[31] = 0
+                        #self.pro_array[32] = 2
+                        #self.pro_array[33] = 0
+                        #self.pro_array[34] = 0
+                        #self.pro_array[35] = 0
+                        #self.pro_array[36] = 0
+                        #self.pro_array[37] = 0
+                        #self.pro_array[38] = 0
+                        #self.pro_array[39] = 0
+                        pass
+                    except:
+                        self.pro_array[25] = 1
+                        if self.sub2.sub.e14.get() != "":
+                            try:
+                                #self.pro_array[25] = (int(self.sub2.sub.e14.get()))
+                                unpacking((int(self.sub2.sub.e14.get())), 26)
+                                pass
+                            except:
+                                self.pro_array[26] = 5
+                                self.pro_array[27] = 0
+                                pass
+
+                        if self.sub2.sub.e15.get() != "":
+                            try:
+                                unpacking((int(self.sub2.sub.e15.get())), 28)
+                                pass
+                            except:
+                                self.pro_array[28] = 2
+                                self.pro_array[29] = 0
+                                pass
+
+                        if self.sub2.sub.e16.get() != "":
+                            try:
+                                unpacking((int(self.sub2.sub.e16.get())), 30)
+                                pass
+                            except:
+                                self.pro_array[30] = 2
+                                self.pro_array[31] = 0
+                                pass
 
 
-           
+                        if self.sub2.sub.e17.get() != "":
+                            try:
+                                #unpacking((int(self.sub2.sub.e17.get())), 32)
+                                #self.pro_array[34] = 0
+                                #self.pro_array[35] = 0
+                                #self.pro_array[36] = 0
+                                #self.pro_array[37] = 0
+                                #self.pro_array[38] = 0
+                                #self.pro_array[39] = 0
+                                pass
+                            except:
+                                #self.pro_array[32] = 2
+                                #self.pro_array[33] = 0
+                                #self.pro_array[34] = 0
+                                #self.pro_array[35] = 0
+                                #self.pro_array[36] = 0
+                                #self.pro_array[37] = 0
+                               # self.pro_array[38] = 0
+                                #self.pro_array[39] = 0
+                                pass
+                        pass
+                else:
+                    self.pro_array[25] = 0
+
+                      
+          
+                if self.cbt_state1.get() == 1:
+                    try:
+                        self.pro_array[32] = 1
+                        if self.sub2.sub.e18.get() != "":
+                            try:
+                                #self.pro_array[25] = (int(self.sub2.sub.e14.get()))
+                                self.pro_array[33] = (int(self.sub2.sub.e18.get()))
+                                pass
+                            except:
+                                self.pro_array[33] = 150
+                                pass
+                        else:
+                            self.pro_array[33] = 150                            
+                        pass
+                    except:
+                        self.pro_array[34] = 0
+                        if self.sub2.sub.e14.get() != "":
+                            try:
+                                self.pro_array[33] = 150
+                                pass
+                            except:
+                                self.pro_array[33] = 150
+                                pass
+                        pass
+                      
+                else:
+                    self.pro_array[32] = 0                            
+                        
+
             send_bytearray(self.pro_array)
 
         def egram_display():
-
-            plt.plot(self.x_arry[self.counter - 50: self.counter], self.y_arry[self.counter - 50: self.counter])
             
-            plt.ylabel("adc")
-            plt.show()
+            #plt.show()
+            #pass
+            if(self.egram_press == 0):
+                self.egram_press = 1
 
+            else:
+                self.egram_press = 0
+            continuous_display()
+                #plt.plot(self.x_arry[self.counter - 50: self.counter], self.y_arry[self.counter - 50: self.counter])   
+                #plt.ylabel("adc")
+                #plt.show()
+                #threading.Timer(0.3, egram_display).start()            
+            #if self.egram_press == 1:
+                #plt.plot(self.x_arry[self.counter - 50: self.counter], self.y_arry[self.counter - 50: self.counter])
+            
+                #plt.ylabel("adc")
+                #plt.show()
+
+                #egram_display1()
+            #else:
+               # pass
+                
+        def continuous_display():
+
+            if(self.egram_press == 1):
+                plt.ion()
+                global fig
+                fig = plt.figure()
+                global ax
+                ax = fig.add_subplot(111)
+                global line1
+                line1, = ax.plot([0,1,2,3,4,5,6,7,8,9,10],self.y_arry[self.counter - 11:self.counter],'r-')
+                self.egram_press = 0
+
+            else:
+                pass
+
+            for count in range(500):
+                line1.set_xdata([0,1,2,3,4,5,6,7,8,9,10])
+                line1.set_ydata(self.y_arry[self.counter - 11:self.counter])
+                #print(count)
+                fig.canvas.draw()
+                fig.canvas.flush_events()
+
+
+            #threading.Timer(1, gram_display1).start()            
+                
+                
+        def cb():
+            
+            print(self.cbt_state.get())
+            if(self.cbt_state.get() == 0):
+                self.sub2.sub.e14.config(state='disabled')
+                self.sub2.sub.e15.config(state='disabled')
+                self.sub2.sub.e16.config(state='disabled')
+                self.sub2.sub.e17.config(state='disabled')
+            else:
+                self.sub2.sub.e14.config(state='normal')
+                self.sub2.sub.e15.config(state='normal')
+                self.sub2.sub.e16.config(state='normal')
+                self.sub2.sub.e17.config(state='normal')                
+
+        def AV_cb():
+            
+            print(self.cbt_state1.get())
+            if(self.cbt_state1.get() == 0):
+                self.sub2.sub.e18.config(state='disabled')
+
+            else:
+                self.sub2.sub.e18.config(state='normal')
+
+                
         #added  
         def clicked_log1():
             file=open("Z:/testcount.txt","r")
@@ -828,8 +1123,9 @@ class Window(Frame):
                         messagebox.showinfo('Message','You are logged in')
                         self.sub2.sub=Toplevel(self.sub2)
                         self.sub2.sub.title("window")
-                        self.sub2.sub.geometry("600x600+125+125")
+                        self.sub2.sub.geometry("900x700+125+125")
                         self.master.after(100, init_serial)
+
 
 
                         ##serial auto detection thread starts
@@ -855,10 +1151,56 @@ class Window(Frame):
                         display_button = Button(self.sub2.sub,text = "Display",command=egram_display)
                         display_button.place(x=380,y=370)
 
+                        #stop_display = Button(self.sub2.sub,text = "Stop Dis",command=stop_display)
+                        #stop_display.place(x=550,y=370)
+
+                        self.check_btn = Checkbutton(self.sub2.sub, text="AV delay", command=AV_cb, variable = self.cbt_state1)
+                        self.check_btn.place(x= 390,y=230)
+                        #self.check_btn.trace("w", callback,)
+
+                        
+                        voo13=Label(self.sub2.sub, text="AV delay time")
+                        voo13.place(x=390,y=250)
+                        self.sub2.sub.e18=Entry(self.sub2.sub)
+                        self.sub2.sub.e18.place(x=540,y=250)
 
 
+                        self.check_btn = Checkbutton(self.sub2.sub, text="adaptive rating", command=cb, variable = self.cbt_state)
+                        self.check_btn.place(x= 390,y=100)
+                        #self.check_btn.trace("w", callback,)
+
+                        
+                        voo13=Label(self.sub2.sub, text="Reaction Time")
+                        voo13.place(x=390,y=130)
+                        self.sub2.sub.e14=Entry(self.sub2.sub)
+                        self.sub2.sub.e14.place(x=540,y=130)
+
+
+                        voo14=Label(self.sub2.sub, text="Recovery Time")
+                        voo14.place(x=390,y=150)
+                        self.sub2.sub.e15=Entry(self.sub2.sub)
+                        self.sub2.sub.e15.place(x=540,y=150)
+
+                        voo15=Label(self.sub2.sub, text="Response Factor")
+                        voo15.place(x=390,y=170)
+                        self.sub2.sub.e16=Entry(self.sub2.sub)
+                        self.sub2.sub.e16.place(x=540,y=170)
+
+                        voo16=Label(self.sub2.sub, text="Activity Threshole")
+                        voo16.place(x=390,y=190)
+                        self.sub2.sub.e17=Entry(self.sub2.sub)
+                        self.sub2.sub.e17.place(x=540,y=190)
+
+                        self.sub2.sub.e14.config(state='disabled')
+                        self.sub2.sub.e15.config(state='disabled')
+                        self.sub2.sub.e16.config(state='disabled')
+                        self.sub2.sub.e17.config(state='disabled')
+                        self.sub2.sub.e18.config(state='disabled')
+                        
                         saveButton=Button(self.sub2.sub,text="Save current setting",command=save)
                         saveButton.place(x=220,y=370)
+
+                        
                         
                         ##Parameter Label
                         voo=Label(self.sub2.sub, text="Ventricular Amplitude:")
